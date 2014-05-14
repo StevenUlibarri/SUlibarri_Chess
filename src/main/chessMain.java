@@ -1,18 +1,16 @@
 package main;
 
-import scratch.ScratchCode;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
+import model.pieces.PieceDictionary;
+import controller.Controller;
 
 
 public class chessMain {
 
 	public static void main(String[] args) {
 		
-//		File module1File = new File(args[0]);
-//		
-//		FileIO f = new FileIO();
-//		f.parseFile(module1File);
-		
-		ScratchCode c = new ScratchCode();
 	}
 
 }
