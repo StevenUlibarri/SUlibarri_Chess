@@ -1,6 +1,8 @@
-package model.commands;
+package chess.model.commands;
 
-public class PlaceCommand {
+import chess.model.board.Location;
+
+public class PlaceCommand implements Executable {
 	
 	private String piece;
 	private char color;
@@ -37,7 +39,14 @@ public class PlaceCommand {
 	}
 	
 	public String toString() {
-		return color + " " + piece + " placed at " + placeLocation;
+		String pieceColor = (color == 'l') ? "Light" : "Dark";
+		return pieceColor + " " + piece + " placed at " + placeLocation;
+	}
+
+	@Override
+	public void execute(String[][] board) {
+		// TODO Auto-generated method stub
+		
 	}
 	
 	

@@ -1,4 +1,4 @@
-package model.commands;
+package chess.model.board;
 
 public class Location {
 	

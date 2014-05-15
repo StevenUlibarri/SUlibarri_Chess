@@ -1,4 +1,4 @@
-package model.pieces;
+package chess.model.pieces;
 
 public abstract class ChessPiece {
 	

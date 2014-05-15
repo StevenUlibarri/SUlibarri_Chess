@@ -1,6 +1,8 @@
-package model.commands;
+package chess.model.commands;
 
-public class MoveCommand {
+import chess.model.board.Location;
+
+public class MoveCommand implements Executable{
 	
 	private Location beginLocation;
 	private Location endLocation;
@@ -8,7 +10,7 @@ public class MoveCommand {
 	
 	public MoveCommand(Location bl, Location el, Boolean t) {
 		beginLocation = bl;
-		endLocation = bl;
+		endLocation = el;
 		takes = t;
 	}
 
@@ -37,8 +39,14 @@ public class MoveCommand {
 	}
 	
 	public String toString() {
-		String verb = (takes) ? " takes on " : " moves to ";
+		String verb = (takes) ? " Takes on " : " Moves to ";
 		return "Piece at " + beginLocation + verb + endLocation;
+		
+	}
+
+	@Override
+	public void execute(String[][] board) {
+		// TODO Auto-generated method stub
 		
 	}
 	

@@ -1,6 +1,6 @@
-package model.commands;
+package chess.model.commands;
 
-public class CastleCommand {
+public class CastleCommand implements Executable {
 	
 	private MoveCommand move1;
 	private MoveCommand move2;
@@ -28,6 +28,12 @@ public class CastleCommand {
 
 	public String toString() {
 		return move1 + " and " + move2;
+	}
+
+	@Override
+	public void execute(String[][] board) {
+		// TODO Auto-generated method stub
+		
 	}
 	
 }
