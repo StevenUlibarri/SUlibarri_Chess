@@ -1,46 +1,29 @@
 package chess.model.commands;
 
 import chess.model.board.Location;
+import chess.model.pieces.ChessPiece;
 
 public class PlaceCommand implements Executable {
 	
-	private String piece;
-	private char color;
+	private ChessPiece piece;
 	private Location placeLocation;
 	
-	public PlaceCommand(String p, char c, Location loc) {
+	public PlaceCommand(ChessPiece p, Location loc) {
 		piece = p;
-		color = c;
 		placeLocation = loc;
 	}
 
-	public String getPiece() {
+	public ChessPiece getPiece() {
 		return piece;
-	}
-
-	public void setPiece(String piece) {
-		this.piece = piece;
-	}
-
-	public char getColor() {
-		return color;
-	}
-
-	public void setColor(char color) {
-		this.color = color;
 	}
 
 	public Location getPlaceLocation() {
 		return placeLocation;
 	}
-
-	public void setPlaceLocation(Location placeLocation) {
-		this.placeLocation = placeLocation;
-	}
 	
 	public String toString() {
-		String pieceColor = (color == 'l') ? "Light" : "Dark";
-		return pieceColor + " " + piece + " placed at " + placeLocation;
+		String pieceColor = (piece.isLight()) ? "Light" : "Dark";
+		return pieceColor + " " + piece.getPieceType() + " placed at " + placeLocation;
 	}
 
 	@Override

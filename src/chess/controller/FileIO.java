@@ -47,8 +47,7 @@ public class FileIO {
 				
 				if (placeMatch.matches()) {
 					e = new PlaceCommand(
-							PieceDictionary.get(placeMatch.group("Piece")),
-							placeMatch.group("Color").charAt(0),
+							PieceDictionary.get(placeMatch.group("Piece"), placeMatch.group("Color").charAt(0) == 'l'),
 							new Location(
 									placeMatch.group("Column").charAt(0),
 									Integer.parseInt(placeMatch.group("Row"))));

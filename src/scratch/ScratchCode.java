@@ -3,6 +3,8 @@ package scratch;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import chess.model.pieces.ChessPiece;
+
 public class ScratchCode {
 
 	public ScratchCode() {
@@ -23,6 +25,26 @@ public class ScratchCode {
 //		
 //		
 //		System.out.println(matches);
+		
+		
+		String[][] boardArray = new String[8][8];
+		
+		for (int i = 7; i >= 0; i--) {
+			for (int j = 0; j < boardArray[i].length; j++) {
+				boardArray[i][j] = ""+i+j;
+				if (j == 7) {
+					System.out.println(boardArray[i][j]);
+				}
+				else {
+					System.out.print(boardArray[i][j]);
+				}
+				
+			}
+		}
+		
+		char a = 'a';
+		System.out.println(a);
+		System.out.println(Character.toUpperCase(a));
 		
 	}
 }
