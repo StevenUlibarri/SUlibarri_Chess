@@ -1,34 +1,28 @@
 package chess.model.commands;
 
+import chess.model.board.ChessBoard;
 import chess.model.board.Location;
 import chess.model.pieces.ChessPiece;
 
-public class PlaceCommand implements Executable {
+public class PlaceCommand implements IExecutable {
 	
 	private ChessPiece piece;
-	private Location placeLocation;
+	private Location location;
 	
 	public PlaceCommand(ChessPiece p, Location loc) {
 		piece = p;
-		placeLocation = loc;
-	}
-
-	public ChessPiece getPiece() {
-		return piece;
-	}
-
-	public Location getPlaceLocation() {
-		return placeLocation;
+		location = loc;
 	}
 	
 	public String toString() {
 		String pieceColor = (piece.isLight()) ? "Light" : "Dark";
-		return pieceColor + " " + piece.getPieceType() + " placed at " + placeLocation;
+		return pieceColor + " " + piece.getPieceType() + " placed at " + location;
 	}
 
 	@Override
-	public void execute(String[][] board) {
-		// TODO Auto-generated method stub
+	public void execute(ChessBoard board, boolean isLightTurn) {
+		
+		board.setPieceAt(piece, location);
 		
 	}
 	

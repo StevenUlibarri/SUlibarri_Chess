@@ -2,32 +2,32 @@ package chess.model.board;
 
 public class Location {
 	
-	private char column;
+	private int column;
 	private int row;
 	
+	private static final int ARRAY_INDEX_COLUMN_OFFSET = 97;
+	private static final int ARRAY_INDEX_ROW_OFFSET = 1;
+	
 	public Location(char c, int r) {
+		column = (int)c - ARRAY_INDEX_COLUMN_OFFSET;
+		row = r - ARRAY_INDEX_ROW_OFFSET;;
+	}
+	
+	public Location(int c, int r) {
 		column = c;
 		row = r;
 	}
 
-	public char getColumn() {
+	public int getColumnIndex() {
 		return column;
 	}
 
-	public void setColumn(char column) {
-		this.column = column;
-	}
-
-	public int getRow() {
+	public int getRowIndex() {
 		return row;
-	}
-
-	public void setRow(int row) {
-		this.row = row;
 	}
 	
 	public String toString() {
-		return "" + column + row;
+		return "" + (char)(column + ARRAY_INDEX_COLUMN_OFFSET) + (row + ARRAY_INDEX_ROW_OFFSET);
 	}
 
 }

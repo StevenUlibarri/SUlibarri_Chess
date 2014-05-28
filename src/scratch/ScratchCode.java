@@ -26,25 +26,35 @@ public class ScratchCode {
 //		
 //		System.out.println(matches);
 		
+//		
+//		String[][] boardArray = new String[8][8];
+//		
+//		for (int i = 7; i >= 0; i--) {
+//			for (int j = 0; j < boardArray[i].length; j++) {
+//				boardArray[i][j] = ""+i+j;
+//				if (j == 7) {
+//					System.out.println(boardArray[i][j]);
+//				}
+//				else {
+//					System.out.print(boardArray[i][j]);
+//				}
+//				
+//			}
+//		}
+//		
+//		char a = 'a';
+//		System.out.println(a);
+//		System.out.println(Character.toUpperCase(a));
+//		
+//		System.out.println(boardArray[0][0]);
+//		
+//		System.out.println((int)'a'-97);
+//		System.out.println((int)'b'-97);
+//		
+//		System.out.println(boardArray[0][1]);
 		
-		String[][] boardArray = new String[8][8];
-		
-		for (int i = 7; i >= 0; i--) {
-			for (int j = 0; j < boardArray[i].length; j++) {
-				boardArray[i][j] = ""+i+j;
-				if (j == 7) {
-					System.out.println(boardArray[i][j]);
-				}
-				else {
-					System.out.print(boardArray[i][j]);
-				}
-				
-			}
-		}
-		
-		char a = 'a';
-		System.out.println(a);
-		System.out.println(Character.toUpperCase(a));
+		ChessPiece[][] test = new ChessPiece[8][8];
+		System.out.println(test[0][0]);
 		
 	}
 }
