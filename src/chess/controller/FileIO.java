@@ -19,7 +19,7 @@ public class FileIO {
 	
 	private Pattern moveCommand = Pattern.compile("^(?<Column1>[a-h])(?<Row1>[1-8]) (?<Column2>[a-h])(?<Row2>[1-8])\\*?$");
 	private Pattern placeCommand = Pattern.compile("^(?<Piece>[kqbnrp])(?<Color>[ld])(?<Column>[a-h])(?<Row>[1-8])$");
-	private Pattern castleCommand = Pattern.compile("^(?<Column1>[a-h])(?<Row1>[1-8]) (?<Column2>[a-h])(?<Row2>[1-8]) (?<Column3>[a-h])(?<Row3>[1-8]) (?<Column4>[a-h])(?<Row4>[1-8])$");
+	private Pattern castleCommand = Pattern.compile("^(?<Column1>[e])(?<Row1>[18]) (?<Column2>[cg])(?<Row2>[18]) (?<Column3>[ah])(?<Row3>[18]) (?<Column4>[df])(?<Row4>[18])$");
 	
 	BufferedReader in;
 

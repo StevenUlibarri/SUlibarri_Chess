@@ -13,7 +13,7 @@ public class Controller {
 	
 	private boolean isLightTurn = true;
 	
-	public Controller(String filePath) {
+	public Controller() {
 		f = new FileIO();
 	}
 	

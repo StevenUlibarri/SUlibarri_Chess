@@ -7,7 +7,7 @@ public class ChessMain {
 
 	public static void main(String[] args) {
 		
-		Controller c = new Controller(args[0]);
+		Controller c = new Controller();
 		c.play();
 	}
 

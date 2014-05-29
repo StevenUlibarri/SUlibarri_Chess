@@ -28,7 +28,7 @@ public class MoveCommand implements IExecutable{
 			throw new InvalidMoveException("There is no Piece at the Location");
 		}
 		else if(movingPiece.isLight() != isLightTurn) {
-			throw new InvalidMoveException(((isLightTurn)? "Light" : "Dark") + "'s turn, that piece is not " + ((isLightTurn)? "Light" : "Dark"));
+			throw new InvalidMoveException("It is " + ((isLightTurn)? "Light" : "Dark") + "'s turn, that piece is not " + ((isLightTurn)? "Light" : "Dark"));
 		}
 		else if(board.getPieceAt(endLocation) != null && (movingPiece.isLight() == board.getPieceAt(endLocation).isLight())) {
 			throw new InvalidMoveException("You cannot take your own Piece!");

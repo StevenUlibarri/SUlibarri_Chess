@@ -18,7 +18,7 @@ public class CastleCommand implements IExecutable {
 
 	@Override
 	public void execute(ChessBoard board, boolean isLightTurn) {
-
+		
 	}
 	
 }
