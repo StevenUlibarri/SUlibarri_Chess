@@ -4,7 +4,7 @@ import java.io.File;
 import java.util.ArrayDeque;
 import chess.model.board.ChessBoard;
 import chess.model.commands.IExecutable;
-import chess.model.customExceptions.InvalidMoveException;
+import chess.model.customExceptions.InvalidCommandException;
 
 public class Controller {
 
@@ -27,7 +27,7 @@ public class Controller {
 					board.displayBoard();
 				}
 				isLightTurn = !isLightTurn;
-			} catch (InvalidMoveException e) {
+			} catch (InvalidCommandException e) {
 				System.out.println("Invalid Move: " + e.getMessage());
 			}
 		}

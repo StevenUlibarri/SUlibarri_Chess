@@ -2,7 +2,7 @@ package chess.model.commands;
 
 import chess.model.board.ChessBoard;
 import chess.model.board.Location;
-import chess.model.customExceptions.InvalidMoveException;
+import chess.model.customExceptions.InvalidCommandException;
 import chess.model.pieces.ChessPiece;
 
 public class MoveCommand implements IExecutable{
@@ -20,21 +20,21 @@ public class MoveCommand implements IExecutable{
 	}
 
 	@Override
-	public void execute(ChessBoard board, boolean isLightTurn) throws InvalidMoveException {
+	public void execute(ChessBoard board, boolean isLightTurn) throws InvalidCommandException {
 		
 		ChessPiece movingPiece = board.getPieceAt(beginLocation);
 		
 		if(movingPiece == null) {
-			throw new InvalidMoveException("There is no Piece at the Location");
+			throw new InvalidCommandException("There is no Piece at the Location");
 		}
 		else if(movingPiece.isLight() != isLightTurn) {
-			throw new InvalidMoveException("It is " + ((isLightTurn)? "Light" : "Dark") + "'s turn, that piece is not " + ((isLightTurn)? "Light" : "Dark"));
+			throw new InvalidCommandException("It is " + ((isLightTurn)? "Light" : "Dark") + "'s turn, that piece is not " + ((isLightTurn)? "Light" : "Dark"));
 		}
 		else if(board.getPieceAt(endLocation) != null && (movingPiece.isLight() == board.getPieceAt(endLocation).isLight())) {
-			throw new InvalidMoveException("You cannot take your own Piece!");
+			throw new InvalidCommandException("You cannot take your own Piece!");
 		}
 		else if(!movingPiece.isValidMove(beginLocation, endLocation, board)) {
-			throw new InvalidMoveException("That Piece cannot move to that Location");
+			throw new InvalidCommandException("That Piece cannot move to that Location");
 		}
 		else {
 			
@@ -54,6 +54,10 @@ public class MoveCommand implements IExecutable{
 	
 	public Location getBeginLocation() {
 		return beginLocation;
+	}
+	
+	public Location getEndLocation() {
+		return endLocation;
 	}
 	
 	public String toString() {

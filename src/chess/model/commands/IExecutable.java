@@ -1,10 +1,10 @@
 package chess.model.commands;
 
 import chess.model.board.ChessBoard;
-import chess.model.customExceptions.InvalidMoveException;
+import chess.model.customExceptions.InvalidCommandException;
 
 public interface IExecutable {
 	
-	public void execute(ChessBoard board, boolean isLightTurn) throws InvalidMoveException;
+	public void execute(ChessBoard board, boolean isLightTurn) throws InvalidCommandException;
 
 }
