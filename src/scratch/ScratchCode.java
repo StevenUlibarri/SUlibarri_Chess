@@ -1,5 +1,6 @@
 package scratch;
 
+import java.util.HashSet;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -53,8 +54,21 @@ public class ScratchCode {
 //		
 //		System.out.println(boardArray[0][1]);
 		
-		ChessPiece[][] test = new ChessPiece[8][8];
-		System.out.println(test[0][0]);
+//		ChessPiece[][] test = new ChessPiece[8][8];
+//		System.out.println(test[0][0]);
+		
+//		HashSet<Integer> tempSet = new HashSet<Integer>();
+//		tempSet.add(1);
+//		tempSet.add(2);
+//		tempSet.add(1);
+//		tempSet.add(1);
+//		
+//		if(tempSet.size() == 1) {
+//			System.out.println("this works?");
+//		}
+//		else {
+//			System.out.println("nope");
+//		}
 		
 	}
 }

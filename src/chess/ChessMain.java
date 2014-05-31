@@ -1,5 +1,6 @@
 package chess;
 
+import scratch.ScratchCode;
 import chess.controller.Controller;
 
 
@@ -9,6 +10,8 @@ public class ChessMain {
 		
 		Controller c = new Controller();
 		c.play();
+		
+//		ScratchCode s = new ScratchCode();
 	}
 
 }

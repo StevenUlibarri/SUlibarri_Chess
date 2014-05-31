@@ -28,7 +28,7 @@ public class Controller {
 				}
 				isLightTurn = !isLightTurn;
 			} catch (InvalidCommandException e) {
-				System.out.println("Invalid Move: " + e.getMessage());
+				System.out.println("Invalid Command: " + e.getMessage());
 			}
 		}
 	}

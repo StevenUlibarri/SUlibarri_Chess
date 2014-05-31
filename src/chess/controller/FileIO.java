@@ -19,7 +19,8 @@ public class FileIO {
 	
 	private Pattern moveCommand = Pattern.compile("^(?<Column1>[a-h])(?<Row1>[1-8]) (?<Column2>[a-h])(?<Row2>[1-8])\\*?$");
 	private Pattern placeCommand = Pattern.compile("^(?<Piece>[kqbnrp])(?<Color>[ld])(?<Column>[a-h])(?<Row>[1-8])$");
-	private Pattern castleCommand = Pattern.compile("^(?<Column1>[e])(?<Row1>[18]) (?<Column2>[cg])(?<Row2>[18]) (?<Column3>[ah])(?<Row3>[18]) (?<Column4>[df])(?<Row4>[18])$");
+	private Pattern castleShortCommand = Pattern.compile("^(?<Column1>[e])(?<Row1>[18]) (?<Column2>[g])(?<Row2>[18]) (?<Column3>[h])(?<Row3>[18]) (?<Column4>[f])(?<Row4>[18])$");
+	private Pattern castleLongCommand = Pattern.compile("^(?<Column1>[e])(?<Row1>[18]) (?<Column2>[c])(?<Row2>[18]) (?<Column3>[a])(?<Row3>[18]) (?<Column4>[d])(?<Row4>[18])$");
 	
 	BufferedReader in;
 
@@ -51,7 +52,8 @@ public class FileIO {
 		
 		Matcher moveMatch = moveCommand.matcher(cmd);
 		Matcher placeMatch = placeCommand.matcher(cmd);
-		Matcher castleMatch = castleCommand.matcher(cmd);
+		Matcher castleShortMatch = castleShortCommand.matcher(cmd);
+		Matcher castleLongMatch = castleLongCommand.matcher(cmd);
 		
 		if (placeMatch.matches()) {
 			tempCommand = new PlaceCommand(
@@ -70,23 +72,42 @@ public class FileIO {
 							Integer.parseInt(moveMatch.group("Row2"))),
 					cmd.contains("*"));
 		}
-		else if (castleMatch.matches()) {
+		else if (castleShortMatch.matches()) {
 			tempCommand = new CastleCommand(
 					new MoveCommand(
 							new Location(
-									castleMatch.group("Column1").charAt(0),
-									Integer.parseInt(castleMatch.group("Row1"))),
+									castleShortMatch.group("Column1").charAt(0),
+									Integer.parseInt(castleShortMatch.group("Row1"))),
 							new Location(
-									castleMatch.group("Column2").charAt(0),
-									Integer.parseInt(castleMatch.group("Row2"))),
+									castleShortMatch.group("Column2").charAt(0),
+									Integer.parseInt(castleShortMatch.group("Row2"))),
 							false),
 					new MoveCommand(
 							new Location(
-									castleMatch.group("Column3").charAt(0),
-									Integer.parseInt(castleMatch.group("Row3"))),
+									castleShortMatch.group("Column3").charAt(0),
+									Integer.parseInt(castleShortMatch.group("Row3"))),
 							new Location(
-									castleMatch.group("Column4").charAt(0),
-									Integer.parseInt(castleMatch.group("Row4"))),
+									castleShortMatch.group("Column4").charAt(0),
+									Integer.parseInt(castleShortMatch.group("Row4"))),
+							false));
+		}
+		else if (castleLongMatch.matches()) {
+			tempCommand = new CastleCommand(
+					new MoveCommand(
+							new Location(
+									castleLongMatch.group("Column1").charAt(0),
+									Integer.parseInt(castleLongMatch.group("Row1"))),
+							new Location(
+									castleLongMatch.group("Column2").charAt(0),
+									Integer.parseInt(castleLongMatch.group("Row2"))),
+							false),
+					new MoveCommand(
+							new Location(
+									castleLongMatch.group("Column3").charAt(0),
+									Integer.parseInt(castleLongMatch.group("Row3"))),
+							new Location(
+									castleLongMatch.group("Column4").charAt(0),
+									Integer.parseInt(castleLongMatch.group("Row4"))),
 							false));
 		}
 		return tempCommand;
