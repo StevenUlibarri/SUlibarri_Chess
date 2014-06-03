@@ -10,10 +10,24 @@ public class ChessBoard {
 	public static final int MIN_INDEX = 0;
 	public static final int MAX_INDEX = 7;
 	
+	private boolean lightKingInCheck = false;
+	private boolean darkKingInCheck = false;
+	private boolean checkMate = false;
+	
 	
 	public ChessBoard() {
 		boardArray  = new ChessPiece[COLUMNS][ROWS];
 		
+	}
+	
+	public ChessBoard(ChessBoard boardToCopy) {
+		boardArray = new ChessPiece[COLUMNS][ROWS];
+		
+		for (int i = 0; i <= MAX_INDEX; i++) {
+			for (int j = 0; j <= MAX_INDEX; j++) {
+				boardArray[i][j] = boardToCopy.getBoardArray()[i][j];
+			}
+		}
 	}
 
 	public void displayBoard() {
@@ -51,4 +65,34 @@ public class ChessBoard {
 	public void setPieceAt(ChessPiece p, Location l) {
 		boardArray[l.getColumnIndex()][l.getRowIndex()] = p;
 	}
+	
+	protected ChessPiece[][] getBoardArray() {
+		return boardArray;
+	}
+
+	public boolean isLightKingInCheck() {
+		return lightKingInCheck;
+	}
+
+	public void setLightKingInCheck(boolean lightKingInCheck) {
+		this.lightKingInCheck = lightKingInCheck;
+	}
+
+	public boolean isDarkKingInCheck() {
+		return darkKingInCheck;
+	}
+
+	public void setDarkKingInCheck(boolean darkKingInCheck) {
+		this.darkKingInCheck = darkKingInCheck;
+	}
+
+	public boolean isCheckMate() {
+		return checkMate;
+	}
+
+	public void setCheckMate(boolean checkMate) {
+		this.checkMate = checkMate;
+	}
+	
+	
 }

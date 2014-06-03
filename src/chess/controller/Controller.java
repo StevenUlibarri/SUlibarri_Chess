@@ -17,7 +17,7 @@ public class Controller {
 		f = new FileIO();
 	}
 	
-	private void executeFile(ArrayDeque<IExecutable> list, boolean withStep) {
+	private void executeFile(ArrayDeque<IExecutable> list, boolean withStep, boolean withTurns) {
 		while (!list.isEmpty()) {
 			try {
 				IExecutable i = list.poll();
@@ -26,7 +26,9 @@ public class Controller {
 					System.out.println(i);
 					board.displayBoard();
 				}
-				isLightTurn = !isLightTurn;
+				if (withTurns) {
+					isLightTurn = !isLightTurn;
+				}
 			} catch (InvalidCommandException e) {
 				System.out.println("Invalid Command: " + e.getMessage());
 			}
@@ -37,12 +39,12 @@ public class Controller {
 		System.out.println("New Game");
 		board = new ChessBoard();
 		isLightTurn = true;
-		executeFile(f.parseFile(new File("scripts/setup")), false);
+		executeFile(f.parseFile(new File("scripts/setup")), false, false);
 	}
 
 	public void play() {
 		setup();
 		board.displayBoard();
-		executeFile(f.parseFile(new File("scripts/test")), true);
+		executeFile(f.parseFile(new File("scripts/test")), true, true);
 	}
 }

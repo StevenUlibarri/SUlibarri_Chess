@@ -1,9 +1,12 @@
 package chess.model.commands;
 
+import java.util.ArrayList;
+
 import chess.model.board.ChessBoard;
 import chess.model.board.Location;
 import chess.model.customExceptions.InvalidCommandException;
 import chess.model.pieces.ChessPiece;
+import chess.model.pieces.King;
 
 public class MoveCommand implements IExecutable{
 	
@@ -12,6 +15,7 @@ public class MoveCommand implements IExecutable{
 	private boolean takes;
 	private String movingPieceString;
 	private String pieceToTake;
+	private String checkString = "";
 	
 	public MoveCommand(Location bl, Location el, Boolean t) {
 		beginLocation = bl;
@@ -36,6 +40,9 @@ public class MoveCommand implements IExecutable{
 		else if(!movingPiece.isValidMove(beginLocation, endLocation, board)) {
 			throw new InvalidCommandException("That Piece cannot move to that Location");
 		}
+		else if(moveAllowsFriendlyCheck(board, isLightTurn)) {
+			throw new InvalidCommandException("That move would leave your king in Check");
+		}
 		else {
 			
 			movingPieceString = movingPiece.toTextString();
@@ -49,6 +56,19 @@ public class MoveCommand implements IExecutable{
 			
 			board.setPieceAt(board.removePieceAt(beginLocation), endLocation);
 			board.getPieceAt(endLocation).moved();
+			
+			if(isLightTurn) {
+				board.setDarkKingInCheck(kingAttacked(board, !isLightTurn));
+				if(board.isDarkKingInCheck()) {
+					checkString = " - Dark King in Check!";
+				}
+			}
+			else {
+				board.setLightKingInCheck(kingAttacked(board, isLightTurn));
+				if(board.isLightKingInCheck()) {
+					checkString = " - Light King in Check!";
+				}
+			}
 		}	
 	}
 	
@@ -62,7 +82,36 @@ public class MoveCommand implements IExecutable{
 	
 	public String toString() {
 		String verb = (takes) ? " Takes " + pieceToTake + " on " : " Moves to ";
-		return movingPieceString + " at " + beginLocation + verb + endLocation;
+		return movingPieceString + " at " + beginLocation + verb + endLocation + checkString;
+	}
+	
+	private boolean moveAllowsFriendlyCheck(ChessBoard currentBoard, boolean turn) {
+		ChessBoard tempBoard = new ChessBoard(currentBoard);
+		tempBoard.setPieceAt(tempBoard.removePieceAt(beginLocation), endLocation);
 		
+		return kingAttacked(tempBoard, turn); 
+	}
+
+	private boolean kingAttacked(ChessBoard board, boolean color) {
+		boolean attacked = false;
+		
+		for (int i = 0; i <= ChessBoard.MAX_INDEX && !attacked; i++) {
+			for (int j = 0; j <= ChessBoard.MAX_INDEX && !attacked; j++) {
+				Location tempLocation = new Location(i,j);
+				ChessPiece tempPiece = board.getPieceAt(tempLocation);
+				
+				if (tempPiece != null && tempPiece.isLight() != color) {
+					
+					ArrayList<Location> tempList = tempPiece.getValidMoves(tempLocation, board);
+					for (int x = 0; x < tempList.size() && !attacked; x++) {
+						ChessPiece pieceToCheck = board.getPieceAt(tempList.get(x));
+						if (pieceToCheck != null && pieceToCheck instanceof King && pieceToCheck.isLight() == color) {
+							attacked = true;
+						}
+					}
+				}
+			}
+		}
+		return attacked;
 	}
 }
