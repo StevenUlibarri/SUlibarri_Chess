@@ -57,19 +57,15 @@ public class MoveCommand implements IExecutable{
 			board.setPieceAt(board.removePieceAt(beginLocation), endLocation);
 			board.getPieceAt(endLocation).moved();
 			
-			if(isLightTurn) {
-				board.setDarkKingInCheck(kingAttacked(board, !isLightTurn));
-				if(board.isDarkKingInCheck()) {
-					checkString = " - Dark King in Check!";
-				}
-			}
-			else {
-				board.setLightKingInCheck(kingAttacked(board, isLightTurn));
-				if(board.isLightKingInCheck()) {
-					checkString = " - Light King in Check!";
-				}
+			upDateCheckStatus(isLightTurn, board);
+			if(board.isKinginCheck(!isLightTurn)) {
+				checkString = " - " + ((isLightTurn)? "Dark":"Light") + " king in Check!";
 			}
 		}	
+	}
+	
+	private void upDateCheckStatus(boolean turn, ChessBoard board) {
+		board.setKingInCheck(!turn, kingAttacked(board, !turn));
 	}
 	
 	public Location getBeginLocation() {

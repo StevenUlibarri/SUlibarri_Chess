@@ -70,28 +70,30 @@ public class ChessBoard {
 		return boardArray;
 	}
 
-	public boolean isLightKingInCheck() {
-		return lightKingInCheck;
-	}
-
-	public void setLightKingInCheck(boolean lightKingInCheck) {
-		this.lightKingInCheck = lightKingInCheck;
-	}
-
-	public boolean isDarkKingInCheck() {
-		return darkKingInCheck;
-	}
-
-	public void setDarkKingInCheck(boolean darkKingInCheck) {
-		this.darkKingInCheck = darkKingInCheck;
-	}
-
 	public boolean isCheckMate() {
 		return checkMate;
 	}
 
 	public void setCheckMate(boolean checkMate) {
 		this.checkMate = checkMate;
+	}
+	
+	public void setKingInCheck(boolean color, boolean check) {
+		if(color) {
+			lightKingInCheck = check;
+		}
+		else {
+			darkKingInCheck = check;
+		}
+	}
+	
+	public boolean isKinginCheck(boolean color) {
+		if(color) {
+			return lightKingInCheck;
+		}
+		else {
+			return darkKingInCheck;
+		}
 	}
 	
 	

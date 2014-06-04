@@ -6,8 +6,6 @@ import chess.model.board.ChessBoard;
 import chess.model.board.Location;
 import chess.model.customExceptions.InvalidCommandException;
 import chess.model.pieces.ChessPiece;
-import chess.model.pieces.King;
-import chess.model.pieces.Rook;
 
 public class CastleCommand implements IExecutable {
 	
@@ -56,6 +54,8 @@ public class CastleCommand implements IExecutable {
 			board.getPieceAt(rookMove.getEndLocation()).moved();
 		}
 	}
+	
+	
 	
 	private boolean isPathClear(int kingRow, ChessBoard board) {
 		
