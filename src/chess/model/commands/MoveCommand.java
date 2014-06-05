@@ -27,6 +27,7 @@ public class MoveCommand implements IExecutable{
 	public void execute(ChessBoard board, boolean isLightTurn) throws InvalidCommandException {
 		
 		ChessPiece movingPiece = board.getPieceAt(beginLocation);
+		ChessPiece endingPiece = board.getPieceAt(endLocation);
 		
 		if(movingPiece == null) {
 			throw new InvalidCommandException("There is no Piece at the Location");
@@ -34,7 +35,7 @@ public class MoveCommand implements IExecutable{
 		else if(movingPiece.isLight() != isLightTurn) {
 			throw new InvalidCommandException("It is " + ((isLightTurn)? "Light" : "Dark") + "'s turn, that piece is not " + ((isLightTurn)? "Light" : "Dark"));
 		}
-		else if(board.getPieceAt(endLocation) != null && (movingPiece.isLight() == board.getPieceAt(endLocation).isLight())) {
+		else if(endingPiece != null && (movingPiece.isLight() == endingPiece.isLight())) {
 			throw new InvalidCommandException("You cannot take your own Piece!");
 		}
 		else if(!movingPiece.isValidMove(beginLocation, endLocation, board)) {

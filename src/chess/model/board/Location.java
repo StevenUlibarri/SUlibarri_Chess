@@ -29,5 +29,15 @@ public class Location {
 	public String toString() {
 		return "" + (char)(column + ARRAY_INDEX_COLUMN_OFFSET) + (row + ARRAY_INDEX_ROW_OFFSET);
 	}
+	
+	public boolean equals(Object obj) {
+		return false;
+		
+	}
+	
+	public int hashCode() {
+		return column;
+		
+	}
 
 }

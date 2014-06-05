@@ -1,6 +1,9 @@
 package chess.model.board;
 
+import java.util.ArrayList;
+
 import chess.model.pieces.ChessPiece;
+import chess.model.pieces.King;
 
 public class ChessBoard {
 	
@@ -94,6 +97,28 @@ public class ChessBoard {
 		else {
 			return darkKingInCheck;
 		}
+	}
+	
+	public boolean locationAttacked(Location l, boolean attackingColor) {
+		boolean attacked = false;
+		
+		for (int i = 0; i <= ChessBoard.MAX_INDEX && !attacked; i++) {
+			for (int j = 0; j <= ChessBoard.MAX_INDEX && !attacked; j++) {
+				Location tempLocation = new Location(i,j);
+				ChessPiece tempPiece = this.getPieceAt(tempLocation);
+				
+				if(tempPiece != null && tempPiece.isLight() == attackingColor) {
+					ArrayList<Location> validMoves = tempPiece.getValidMoves(tempLocation, this);
+					for (int x = 0; x < validMoves.size() && !attacked; x++) {
+						if (l.equals(validMoves.get(x))) {
+							attacked = true;
+						}
+					}
+				}
+			}
+		}
+		return attacked;
+			
 	}
 	
 	
