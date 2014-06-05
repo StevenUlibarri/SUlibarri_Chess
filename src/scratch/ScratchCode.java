@@ -4,6 +4,7 @@ import java.util.HashSet;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import chess.model.board.Location;
 import chess.model.pieces.ChessPiece;
 
 public class ScratchCode {
@@ -70,5 +71,16 @@ public class ScratchCode {
 //			System.out.println("nope");
 //		}
 		
+//		Location a = new Location(0,0);
+//		Location b = new Location(0,1);
+//		Location c = new Location(0,0);
+//		
+//		System.out.println(a.equals(b));
+//		System.out.println(a.equals(c));
+//		System.out.println(a.hashCode() == b.hashCode());
+//		System.out.println(a.hashCode() == c.hashCode());
+//		System.out.println(a.hashCode());
+//		System.out.println(b.hashCode());
+//		System.out.println(new Location(7,7).hashCode());
 	}
 }

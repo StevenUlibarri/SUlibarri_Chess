@@ -107,19 +107,31 @@ public class ChessBoard {
 				Location tempLocation = new Location(i,j);
 				ChessPiece tempPiece = this.getPieceAt(tempLocation);
 				
-				if(tempPiece != null && tempPiece.isLight() == attackingColor) {
+				if(tempPiece != null && tempPiece.isLight() != attackingColor) {
 					ArrayList<Location> validMoves = tempPiece.getValidMoves(tempLocation, this);
-					for (int x = 0; x < validMoves.size() && !attacked; x++) {
-						if (l.equals(validMoves.get(x))) {
-							attacked = true;
-						}
+					if (validMoves.contains(l)) {
+						attacked = true;
 					}
 				}
 			}
 		}
-		return attacked;
-			
+		return attacked;	
 	}
 	
-	
+	public Location getKingLocation(boolean color) {
+		boolean found = false;
+		
+		Location kingLocation = null;
+		
+		for (int i = 0; i <= ChessBoard.MAX_INDEX && !found; i++) {
+			for (int j = 0; j <= ChessBoard.MAX_INDEX && !found; j++) {
+				ChessPiece piece = this.getPieceAt(new Location(i,j));
+				if(piece instanceof King && piece.isLight() == color) {
+					found = true;
+					kingLocation= new Location(i,j);
+				}
+			}
+		}
+		return kingLocation;
+	}
 }

@@ -31,12 +31,18 @@ public class Location {
 	}
 	
 	public boolean equals(Object obj) {
-		return false;
-		
+		boolean equal = false;
+		if(obj != null && obj instanceof Location) {
+			Location toComp = (Location)obj;
+			if(this.column == toComp.column && this.row == toComp.row) {
+				equal = true;
+			}
+		}
+		return equal;
 	}
 	
 	public int hashCode() {
-		return column;
+		return (((column+1)*8) + (row+1) - 8);
 		
 	}
 

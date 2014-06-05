@@ -86,7 +86,7 @@ public class MoveCommand implements IExecutable{
 		ChessBoard tempBoard = new ChessBoard(currentBoard);
 		tempBoard.setPieceAt(tempBoard.removePieceAt(beginLocation), endLocation);
 		
-		return kingAttacked(tempBoard, turn); 
+		return currentBoard.locationAttacked(currentBoard.getKingLocation(turn), !turn);
 	}
 
 	private boolean kingAttacked(ChessBoard board, boolean color) {
