@@ -15,7 +15,7 @@ public class Bishop extends ChessPiece {
 
 	@Override
 	public ArrayList<Location> getValidMoves(Location l, ChessBoard b) {
-
+		
 		return super.getBishopMoves(l, b);
 	}
 }

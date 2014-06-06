@@ -25,6 +25,18 @@ public class PlaceCommand implements IExecutable {
 		board.setPieceAt(piece, location);
 		
 	}
+
+	@Override
+	public String getSelectString() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public void executeLite(ChessBoard board, boolean isLightTurn) {
+		// TODO Auto-generated method stub
+		
+	}
 	
 	
 }

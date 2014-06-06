@@ -1,12 +1,11 @@
 package chess.model.commands;
 
-import java.util.ArrayList;
-
 import chess.model.board.ChessBoard;
 import chess.model.board.Location;
 import chess.model.customExceptions.InvalidCommandException;
 import chess.model.pieces.ChessPiece;
-import chess.model.pieces.King;
+import chess.model.pieces.Pawn;
+import chess.model.pieces.Queen;
 
 public class MoveCommand implements IExecutable{
 	
@@ -41,7 +40,7 @@ public class MoveCommand implements IExecutable{
 		else if(!movingPiece.isValidMove(beginLocation, endLocation, board)) {
 			throw new InvalidCommandException("That Piece cannot move to that Location");
 		}
-		else if(moveAllowsFriendlyCheck(board, isLightTurn)) {
+		else if(board.moveAllowsFriendlyCheck(beginLocation, endLocation, isLightTurn)) {
 			throw new InvalidCommandException("That move would leave your king in Check");
 		}
 		else {
@@ -58,15 +57,17 @@ public class MoveCommand implements IExecutable{
 			board.setPieceAt(board.removePieceAt(beginLocation), endLocation);
 			board.getPieceAt(endLocation).moved();
 			
-			upDateCheckStatus(isLightTurn, board);
-			if(board.isKinginCheck(!isLightTurn)) {
+			checkPromotions(isLightTurn, board);
+			board.upDateCheckStatus(isLightTurn);
+			
+			if(board.isKinginCheck(!isLightTurn) && board.isColorInCheckMate(!isLightTurn)) {
+				board.setCheckMate(true);
+				checkString = " - " + ((isLightTurn)? "Dark":"Light") + " king CheckMate! " + ((isLightTurn)? "Light":"Dark") + " Wins!";
+			}
+			else if(board.isKinginCheck(!isLightTurn)) {
 				checkString = " - " + ((isLightTurn)? "Dark":"Light") + " king in Check!";
 			}
 		}	
-	}
-	
-	private void upDateCheckStatus(boolean turn, ChessBoard board) {
-		board.setKingInCheck(!turn, kingAttacked(board, !turn));
 	}
 	
 	public Location getBeginLocation() {
@@ -81,34 +82,49 @@ public class MoveCommand implements IExecutable{
 		String verb = (takes) ? " Takes " + pieceToTake + " on " : " Moves to ";
 		return movingPieceString + " at " + beginLocation + verb + endLocation + checkString;
 	}
-	
-	private boolean moveAllowsFriendlyCheck(ChessBoard currentBoard, boolean turn) {
-		ChessBoard tempBoard = new ChessBoard(currentBoard);
-		tempBoard.setPieceAt(tempBoard.removePieceAt(beginLocation), endLocation);
-		
-		return currentBoard.locationAttacked(currentBoard.getKingLocation(turn), !turn);
+
+	@Override
+	public String getSelectString() {
+		return endLocation.toString();
 	}
 
-	private boolean kingAttacked(ChessBoard board, boolean color) {
-		boolean attacked = false;
+	@Override
+	public void executeLite(ChessBoard board, boolean isLightTurn) {
 		
-		for (int i = 0; i <= ChessBoard.MAX_INDEX && !attacked; i++) {
-			for (int j = 0; j <= ChessBoard.MAX_INDEX && !attacked; j++) {
-				Location tempLocation = new Location(i,j);
-				ChessPiece tempPiece = board.getPieceAt(tempLocation);
-				
-				if (tempPiece != null && tempPiece.isLight() != color) {
-					
-					ArrayList<Location> tempList = tempPiece.getValidMoves(tempLocation, board);
-					for (int x = 0; x < tempList.size() && !attacked; x++) {
-						ChessPiece pieceToCheck = board.getPieceAt(tempList.get(x));
-						if (pieceToCheck != null && pieceToCheck instanceof King && pieceToCheck.isLight() == color) {
-							attacked = true;
-						}
-					}
-				}
+		ChessPiece movingPiece = board.getPieceAt(beginLocation);
+		
+		movingPieceString = movingPiece.toTextString();
+		if (board.getPieceAt(endLocation) != null) {
+			takes = true;
+			pieceToTake = board.getPieceAt(endLocation).toTextString();
+		}
+		else {
+			takes = false;
+		}
+		
+		board.setPieceAt(board.removePieceAt(beginLocation), endLocation);
+		board.getPieceAt(endLocation).moved();
+		
+		checkPromotions(isLightTurn, board);
+		board.upDateCheckStatus(isLightTurn);
+		
+		if(board.isKinginCheck(!isLightTurn) && board.isColorInCheckMate(!isLightTurn)) {
+			board.setCheckMate(true);
+			checkString = " - " + ((isLightTurn)? "Dark":"Light") + " king CheckMate! " + ((isLightTurn)? "Light":"Dark") + " Wins!";
+		}
+		else if(board.isKinginCheck(!isLightTurn)) {
+			checkString = " - " + ((isLightTurn)? "Dark":"Light") + " king in Check!";
+		}
+	}
+	
+	private void checkPromotions(boolean color, ChessBoard board) {
+		int rowToCheck = (color)? 7:0;
+		
+		for(int i = 0; i <= ChessBoard.MAX_INDEX; i++) {
+			ChessPiece p = board.getPieceAt(new Location(i, rowToCheck));
+			if(p != null && p instanceof Pawn) {
+				board.setPieceAt(new Queen(color), new Location(i, rowToCheck));
 			}
 		}
-		return attacked;
 	}
 }

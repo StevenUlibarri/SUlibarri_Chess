@@ -49,18 +49,8 @@ public abstract class ChessPiece {
 	public abstract ArrayList<Location> getValidMoves(Location l, ChessBoard b);
 	
 	public boolean isValidMove(Location beginLocation, Location endLocation, ChessBoard b) {
-		return findLocationInList(endLocation, getValidMoves(beginLocation, b));
+		return getValidMoves(beginLocation, b).contains(endLocation);
 	};
-	
-	protected boolean findLocationInList(Location l, ArrayList<Location> validMoveList) {
-		boolean valid = false;
-		for (int i = 0; i < validMoveList.size() && !valid; i++) {
-			if (l.getColumnIndex() == validMoveList.get(i).getColumnIndex() && l.getRowIndex() == validMoveList.get(i).getRowIndex()) {
-				valid = true;
-			}
-		}
-		return valid;
-	}
 	
 	protected ArrayList<Location> getBishopMoves(Location l, ChessBoard b) {
 		ArrayList<Location> moves = new ArrayList<Location>();

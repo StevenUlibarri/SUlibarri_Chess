@@ -107,7 +107,7 @@ public class ChessBoard {
 				Location tempLocation = new Location(i,j);
 				ChessPiece tempPiece = this.getPieceAt(tempLocation);
 				
-				if(tempPiece != null && tempPiece.isLight() != attackingColor) {
+				if(tempPiece != null && tempPiece.isLight() == attackingColor) {
 					ArrayList<Location> validMoves = tempPiece.getValidMoves(tempLocation, this);
 					if (validMoves.contains(l)) {
 						attacked = true;
@@ -133,5 +133,84 @@ public class ChessBoard {
 			}
 		}
 		return kingLocation;
+	}
+	
+	public void upDateCheckStatus(boolean currentTurn) {
+		this.setKingInCheck(!currentTurn, this.locationAttacked(this.getKingLocation(!currentTurn), currentTurn));
+	}
+	
+	public boolean moveAllowsFriendlyCheck(Location begin, Location end, boolean turn) {
+		ChessBoard tempBoard = new ChessBoard(this);
+		tempBoard.setPieceAt(tempBoard.removePieceAt(begin), end);
+		
+		return tempBoard.locationAttacked(tempBoard.getKingLocation(turn), !turn);
+	}
+
+	public boolean isColorInCheckMate(boolean color) {
+
+		return getPiecesWithValidMoves(color).isEmpty();
+	}
+	
+	public ArrayList<Location> getPiecesWithValidMoves(boolean color) {
+		ArrayList<Location> movablePieces = new ArrayList<Location>();
+		
+		for(int i = 0; i <= ChessBoard.MAX_INDEX; i++) {
+			for(int j = 0; j <= ChessBoard.MAX_INDEX; j++) {
+				Location temp = new Location(i,j);
+				ChessPiece p = getPieceAt(temp);
+				
+				if(p != null && p.isLight() == color) {
+					if(!mateFilter(temp, getPieceAt(temp).getValidMoves(temp, this)).isEmpty()) {
+						movablePieces.add(temp);
+					}
+				}
+			}
+		}
+		
+		return movablePieces;
+	}
+	
+	public ArrayList<Location> mateFilter(Location begin, ArrayList<Location> moves) {
+		ArrayList<Location> trimmedList = new ArrayList<Location>();
+		ChessPiece p = getPieceAt(begin);
+		
+		for(Location move: moves) {
+			if(!moveAllowsFriendlyCheck(begin, move, p.isLight())) {
+				trimmedList.add(move);
+			}
+		}
+		
+		return trimmedList;
+	}
+	
+	public boolean isLongCastleClear(Location kingLocation) {
+		boolean clear = true;
+		
+		for(int i = 3; i >= 1 && clear; i--) {
+			Location temp = new Location(i, kingLocation.getRowIndex());
+			if(getPieceAt(temp) != null || locationAttacked(temp, !getPieceAt(kingLocation).isLight()) || getPieceAt(kingLocation).hasMoved()) {
+				clear = false;
+			}
+		}
+		return clear;
+	}
+	
+	public boolean isShortCastleClear(Location kingLocation) {
+		boolean clear = true;
+		
+		for(int i = 5; i <= 6 && clear; i++) {
+			Location temp = new Location(i, kingLocation.getRowIndex());
+			if(getPieceAt(temp) != null || locationAttacked(temp, !getPieceAt(kingLocation).isLight())  || getPieceAt(kingLocation).hasMoved()) {
+				clear = false;
+			}
+		}
+		return clear;
+	}
+	
+	public boolean isCastlePathClear(Location kingLocation, Location castleLocation) {
+		boolean clear = (castleLocation.getColumnIndex() == 6)? 
+				isShortCastleClear(kingLocation) : isLongCastleClear(kingLocation);
+		return clear;
+		
 	}
 }

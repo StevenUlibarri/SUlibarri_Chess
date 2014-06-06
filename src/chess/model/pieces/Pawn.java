@@ -29,6 +29,7 @@ public class Pawn  extends ChessPiece {
 			}
 		}
 		validMoveList.addAll(getAttackingMoves(l, b));
+		
 		return validMoveList;
 	}
 	

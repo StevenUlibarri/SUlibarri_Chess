@@ -15,6 +15,8 @@ public class Rook extends ChessPiece {
 
 	@Override
 	public ArrayList<Location> getValidMoves(Location l, ChessBoard b) {
+		
 		return super.getRookMoves(l, b);
+
 	}
 }

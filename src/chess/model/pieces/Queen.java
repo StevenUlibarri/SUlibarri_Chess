@@ -17,5 +17,6 @@ public class Queen extends ChessPiece {
 	public ArrayList<Location> getValidMoves(Location l, ChessBoard b) {
 		
 		return super.getQueenMoves(l, b);
+		
 	}
 }
