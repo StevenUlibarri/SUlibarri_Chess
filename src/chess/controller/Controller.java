@@ -4,6 +4,7 @@ import java.io.File;
 import java.util.ArrayDeque;
 import java.util.ArrayList;
 
+import chess.gui.ChessUI;
 import chess.model.board.ChessBoard;
 import chess.model.board.Location;
 import chess.model.commands.CastleCommand;
@@ -61,7 +62,7 @@ public class Controller {
 		setup();
 		board.displayBoard();
 		
-		while(!board.isCheckMate()) {
+		while(!board.isMate()) {
 			IExecutable move = displayMovablePieces(isLightTurn);
 			move.executeLite(board, isLightTurn);
 			System.out.println(move);
@@ -93,6 +94,7 @@ public class Controller {
 		for(Location endLocation : pieceMoves) {
 			validCommands.add(new MoveCommand(pieceLocation,endLocation,false));
 		}
+		
 		if(board.getPieceAt(pieceLocation) instanceof King) {
 			if(board.isShortCastleClear(pieceLocation)) {
 				validCommands.add(new CastleCommand(
@@ -121,5 +123,9 @@ public class Controller {
 		}
 		
 		return choice;
+	}
+	
+	public void playGui() {
+		ChessUI c = new ChessUI(this);
 	}
 }

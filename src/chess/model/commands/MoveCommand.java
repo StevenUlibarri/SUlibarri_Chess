@@ -60,9 +60,13 @@ public class MoveCommand implements IExecutable{
 			checkPromotions(isLightTurn, board);
 			board.upDateCheckStatus(isLightTurn);
 			
-			if(board.isKinginCheck(!isLightTurn) && board.isColorInCheckMate(!isLightTurn)) {
-				board.setCheckMate(true);
+			if(board.isKinginCheck(!isLightTurn) && board.isMate(!isLightTurn)) {
+				board.setMate(true);
 				checkString = " - " + ((isLightTurn)? "Dark":"Light") + " king CheckMate! " + ((isLightTurn)? "Light":"Dark") + " Wins!";
+			}
+			else if(board.isMate(!isLightTurn)) {
+				board.setMate(true);
+				checkString = " - " + "StaleMate!";
 			}
 			else if(board.isKinginCheck(!isLightTurn)) {
 				checkString = " - " + ((isLightTurn)? "Dark":"Light") + " king in Check!";
@@ -108,9 +112,13 @@ public class MoveCommand implements IExecutable{
 		checkPromotions(isLightTurn, board);
 		board.upDateCheckStatus(isLightTurn);
 		
-		if(board.isKinginCheck(!isLightTurn) && board.isColorInCheckMate(!isLightTurn)) {
-			board.setCheckMate(true);
+		if(board.isKinginCheck(!isLightTurn) && board.isMate(!isLightTurn)) {
+			board.setMate(true);
 			checkString = " - " + ((isLightTurn)? "Dark":"Light") + " king CheckMate! " + ((isLightTurn)? "Light":"Dark") + " Wins!";
+		}
+		else if(board.isMate(!isLightTurn)) {
+			board.setMate(true);
+			checkString = " - " + "StaleMate!";
 		}
 		else if(board.isKinginCheck(!isLightTurn)) {
 			checkString = " - " + ((isLightTurn)? "Dark":"Light") + " king in Check!";

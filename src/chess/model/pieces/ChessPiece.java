@@ -75,7 +75,7 @@ public abstract class ChessPiece {
 		
 	}
 
-	public ArrayList<Location> getQueenMoves(Location l, ChessBoard b) {
+	protected ArrayList<Location> getQueenMoves(Location l, ChessBoard b) {
 		ArrayList<Location> moves = new ArrayList<Location>();
 		
 		moves.addAll(getBishopMoves(l, b));

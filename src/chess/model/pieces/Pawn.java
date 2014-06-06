@@ -24,7 +24,7 @@ public class Pawn  extends ChessPiece {
 		
 		if (basicMove != null) {
 			validMoveList.add(basicMove);
-			if (!super.hasMoved()) {
+			if (!super.hasMoved() && b.getPieceAt(new Location(l.getColumnIndex(), l.getRowIndex() + 2*colorModifier)) == null) {
 				validMoveList.add(new Location(l.getColumnIndex(), l.getRowIndex() + 2*colorModifier));
 			}
 		}

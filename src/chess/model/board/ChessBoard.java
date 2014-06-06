@@ -15,7 +15,7 @@ public class ChessBoard {
 	
 	private boolean lightKingInCheck = false;
 	private boolean darkKingInCheck = false;
-	private boolean checkMate = false;
+	private boolean mate = false;
 	
 	
 	public ChessBoard() {
@@ -73,12 +73,12 @@ public class ChessBoard {
 		return boardArray;
 	}
 
-	public boolean isCheckMate() {
-		return checkMate;
+	public boolean isMate() {
+		return mate;
 	}
 
-	public void setCheckMate(boolean checkMate) {
-		this.checkMate = checkMate;
+	public void setMate(boolean mate) {
+		this.mate = mate;
 	}
 	
 	public void setKingInCheck(boolean color, boolean check) {
@@ -99,6 +99,10 @@ public class ChessBoard {
 		}
 	}
 	
+	public void upDateCheckStatus(boolean currentTurn) {
+		this.setKingInCheck(!currentTurn, this.locationAttacked(this.getKingLocation(!currentTurn), currentTurn));
+	}
+
 	public boolean locationAttacked(Location l, boolean attackingColor) {
 		boolean attacked = false;
 		
@@ -135,10 +139,6 @@ public class ChessBoard {
 		return kingLocation;
 	}
 	
-	public void upDateCheckStatus(boolean currentTurn) {
-		this.setKingInCheck(!currentTurn, this.locationAttacked(this.getKingLocation(!currentTurn), currentTurn));
-	}
-	
 	public boolean moveAllowsFriendlyCheck(Location begin, Location end, boolean turn) {
 		ChessBoard tempBoard = new ChessBoard(this);
 		tempBoard.setPieceAt(tempBoard.removePieceAt(begin), end);
@@ -146,7 +146,7 @@ public class ChessBoard {
 		return tempBoard.locationAttacked(tempBoard.getKingLocation(turn), !turn);
 	}
 
-	public boolean isColorInCheckMate(boolean color) {
+	public boolean isMate(boolean color) {
 
 		return getPiecesWithValidMoves(color).isEmpty();
 	}
