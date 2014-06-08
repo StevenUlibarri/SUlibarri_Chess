@@ -19,7 +19,10 @@ public class MouseController extends Observable implements MouseInputListener {
 	}
 
 	public void mouseClicked(MouseEvent e) {
-		
+		setPoint(e.getPoint());
+		setChanged();
+		notifyObservers(e);
+		System.out.println("Click");
 	}
 	
 	public void mouseMoved(MouseEvent e) {

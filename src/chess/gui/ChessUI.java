@@ -10,7 +10,7 @@ public class ChessUI {
 	
 	public ChessUI(Controller c) {
 		JFrame mainFrame = new JFrame("Chess Yo");
-		mainFrame.setSize(800, 800);
+		mainFrame.setSize(806, 830);
 		mainFrame.setResizable(false);
 		mainFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		
