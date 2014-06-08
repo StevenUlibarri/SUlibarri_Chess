@@ -7,6 +7,7 @@ import chess.controller.Controller;
 public class ChessUI {
 	
 	private ChessPanel cp;
+	private MouseController mc;
 	
 	public ChessUI(Controller c) {
 		JFrame mainFrame = new JFrame("Chess Yo");
@@ -14,7 +15,9 @@ public class ChessUI {
 		mainFrame.setResizable(false);
 		mainFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		
-		cp = new ChessPanel(new MouseController());
+		mc = new MouseController();
+		mc.addObserver(c);
+		cp = new ChessPanel(mc);
 		cp.setVisible(true);
 		
 		mainFrame.add(cp);

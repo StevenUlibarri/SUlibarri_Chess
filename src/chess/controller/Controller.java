@@ -1,10 +1,15 @@
 package chess.controller;
 
+import java.awt.event.MouseEvent;
 import java.io.File;
 import java.util.ArrayDeque;
 import java.util.ArrayList;
+import java.util.Observable;
+import java.util.Observer;
 
+import chess.gui.ChessPanel;
 import chess.gui.ChessUI;
+import chess.gui.MouseController;
 import chess.model.board.ChessBoard;
 import chess.model.board.Location;
 import chess.model.commands.CastleCommand;
@@ -13,7 +18,7 @@ import chess.model.commands.MoveCommand;
 import chess.model.customExceptions.InvalidCommandException;
 import chess.model.pieces.King;
 
-public class Controller {
+public class Controller implements Observer {
 
 	private ChessBoard board;
 	private FileIO f;
@@ -129,5 +134,20 @@ public class Controller {
 		setup();
 		ChessUI c = new ChessUI(this);
 		c.getPanel().updateBoard(board);
+	}
+
+	@Override
+	public void update(Observable obs, Object obj) {
+		if(obs instanceof MouseController && obj instanceof MouseEvent) {
+			MouseEvent e = (MouseEvent) obj;
+			ChessPanel p = (ChessPanel) e.getComponent();
+			
+			if(p.getSelected() != null) {
+				p.setSelected(null);
+//				p.resetSelected();
+				p.repaint();
+			}
+		}
+		
 	}
 }

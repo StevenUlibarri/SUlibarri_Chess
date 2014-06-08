@@ -2,9 +2,6 @@ package chess.gui;
 
 import java.awt.Graphics;
 import java.util.ArrayList;
-import java.util.Observable;
-import java.util.Observer;
-
 import javax.swing.JPanel;
 
 import chess.model.board.ChessBoard;
@@ -16,10 +13,12 @@ public class ChessPanel extends JPanel {
 	private static final long serialVersionUID = 1L;
 	
 	private ArrayList<ChessSpace> spaces = new ArrayList<ChessSpace>();
+	private ChessSpace currentSelect;
 
 	public ChessPanel(MouseController mc) {
 		this.addMouseListener(mc);
 		this.addMouseMotionListener(mc);
+		currentSelect = null;
 		
 		createSpaces();
 		for(ChessSpace c: spaces) {
@@ -60,5 +59,18 @@ public class ChessPanel extends JPanel {
 		}
 		this.repaint();
 	}
-
+	
+	public void setSelected(ChessSpace space) {
+		this.currentSelect = space;
+	}
+	
+	public ChessSpace getSelected() {
+		return this.currentSelect;
+	}
+	
+	public void resetSelected() {
+		for(ChessSpace c : spaces) {
+			c.setSeletected(false);
+		}
+	}
 }

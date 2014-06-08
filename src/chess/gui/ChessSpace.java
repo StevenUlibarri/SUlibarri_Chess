@@ -4,7 +4,6 @@ import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
-import java.awt.Image;
 import java.awt.Point;
 import java.awt.event.MouseEvent;
 import java.awt.image.BufferedImage;
@@ -54,25 +53,29 @@ public class ChessSpace implements Observer {
 	@Override
 	public void update(Observable obs, Object obj) {
 		
-		if(obs instanceof MouseController && obj instanceof Point) {
-			Point p = (MouseEvent)obj;
-//			ChessPanel p = (ChessPanel) e.getComponent();
+		if(obs instanceof MouseController && obj instanceof MouseEvent) {
+			MouseEvent e = (MouseEvent)obj;
 			
-			
-			if(this.contains(e.getPoint()) && !highLighted) {
-				highLighted = true;
-				e.getComponent().repaint();
+			if(SwingUtilities.isLeftMouseButton(e)) {
+				ChessPanel p = (ChessPanel) e.getComponent();
+				if(this.contains(e.getPoint()) && p.getSelected() == null) {
+					System.out.println("Selected");
+					this.selected = true;
+					p.setSelected(this);
+				}
 			}
-			else if (!this.contains(e.getPoint()) && highLighted) {
-				highLighted = false;
-				e.getComponent().repaint();
+			else {
+
+				if(this.contains(e.getPoint()) && !highLighted) {
+					highLighted = true;
+					e.getComponent().repaint();
+				}
+				else if (!this.contains(e.getPoint()) && highLighted) {
+					highLighted = false;
+					e.getComponent().repaint();
+				}
 			}
 		}
-		
-//		if(this.contains(e.getPoint()) && SwingUtilities.isLeftMouseButton(e)) {
-//			selected = true;
-//			e.getComponent().repaint();
-//		}
 	}
 
 	private boolean contains(Point point) {
@@ -89,5 +92,10 @@ public class ChessSpace implements Observer {
 	
 	public int getY() {
 		return this.y;
+	}
+
+	public void setSeletected(boolean b) {
+		this.selected = b;
+		
 	}
 }
