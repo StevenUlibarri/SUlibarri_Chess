@@ -126,6 +126,8 @@ public class Controller {
 	}
 	
 	public void playGui() {
+		setup();
 		ChessUI c = new ChessUI(this);
+		c.getPanel().updateBoard(board);
 	}
 }

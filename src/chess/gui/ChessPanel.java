@@ -8,8 +8,10 @@ import java.util.Observer;
 import javax.swing.JPanel;
 
 import chess.model.board.ChessBoard;
+import chess.model.board.Location;
+import chess.model.pieces.ChessPiece;
 
-public class ChessPanel extends JPanel implements Observer {
+public class ChessPanel extends JPanel {
 	
 	private static final long serialVersionUID = 1L;
 	
@@ -31,6 +33,9 @@ public class ChessPanel extends JPanel implements Observer {
 			c.drawMe(g);
 		}
 		for(ChessSpace c : spaces) {
+			c.drawPiece(g);
+		}
+		for(ChessSpace c : spaces) {
 			c.drawLight(g);
 		}
 	}
@@ -42,11 +47,18 @@ public class ChessPanel extends JPanel implements Observer {
 			}
 		}
 	}
-
-	@Override
-	public void update(Observable o, Object arg) {
-
-		
+	
+	public void updateBoard(ChessBoard board) {
+		for(ChessSpace c: spaces) {
+			ChessPiece p = board.getPieceAt(new Location(c.getX(), c.getY()));
+			if(p == null) {
+				c.setPiece(null);
+			}
+			else {
+				c.setPiece(PieceImageFactory.getImage(p.getPieceType(), p.isLight()));
+			}
+		}
+		this.repaint();
 	}
 
 }

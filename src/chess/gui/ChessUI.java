@@ -6,7 +6,7 @@ import chess.controller.Controller;
 
 public class ChessUI {
 	
-	ChessPanel cp;
+	private ChessPanel cp;
 	
 	public ChessUI(Controller c) {
 		JFrame mainFrame = new JFrame("Chess Yo");
@@ -19,5 +19,9 @@ public class ChessUI {
 		
 		mainFrame.add(cp);
 		mainFrame.setVisible(true);
+	}
+	
+	public ChessPanel getPanel() {
+		return cp;
 	}
 }

@@ -7,6 +7,7 @@ import java.awt.Graphics2D;
 import java.awt.Image;
 import java.awt.Point;
 import java.awt.event.MouseEvent;
+import java.awt.image.BufferedImage;
 import java.util.Observable;
 import java.util.Observer;
 
@@ -17,11 +18,11 @@ public class ChessSpace implements Observer {
 	public static final int SIZE = 100;
 	public static final Color litColor = Color.RED;
 	
-	int x,y;
-	Color baseColor;
-	boolean highLighted = false;
-	boolean selected = false;
-	Image piece;
+	private int x,y;
+	private Color baseColor;
+	private boolean highLighted = false;
+	private boolean selected = false;
+	private BufferedImage piece = null;
 	
 	
 	public ChessSpace(int x, int y, boolean color) {
@@ -44,18 +45,21 @@ public class ChessSpace implements Observer {
 		}
 	}
 	
+	public void drawPiece(Graphics g) {
+		if(piece != null) {
+			g.drawImage(piece, x*100+25, (y*-100)+700+25, 50, 50, null);
+		}
+	}
+	
 	@Override
 	public void update(Observable obs, Object obj) {
 		
-		if(obs instanceof MouseController && obj instanceof MouseEvent) {
-			MouseEvent e = (MouseEvent)obj;
-			ChessPanel p = (ChessPanel) e.getComponent();
+		if(obs instanceof MouseController && obj instanceof Point) {
+			Point p = (MouseEvent)obj;
+//			ChessPanel p = (ChessPanel) e.getComponent();
 			
-			if(this.contains(e.getPoint()) && SwingUtilities.isLeftMouseButton(e)) {
-				selected = true;
-				e.getComponent().repaint();
-			}
-			else if(this.contains(e.getPoint()) && !highLighted) {
+			
+			if(this.contains(e.getPoint()) && !highLighted) {
 				highLighted = true;
 				e.getComponent().repaint();
 			}
@@ -64,10 +68,26 @@ public class ChessSpace implements Observer {
 				e.getComponent().repaint();
 			}
 		}
+		
+//		if(this.contains(e.getPoint()) && SwingUtilities.isLeftMouseButton(e)) {
+//			selected = true;
+//			e.getComponent().repaint();
+//		}
 	}
 
 	private boolean contains(Point point) {
 		return (point.x > x*100 && point.x < x*100 + SIZE && point.y > (y*-100)+700 && point.y < (y*-100)+700 + SIZE);
 	}
-
+	
+	public void setPiece(BufferedImage img) {
+		this.piece = img;
+	}
+	
+	public int getX() {
+		return this.x;
+	}
+	
+	public int getY() {
+		return this.y;
+	}
 }
