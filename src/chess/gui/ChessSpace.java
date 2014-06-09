@@ -12,6 +12,8 @@ import java.util.Observer;
 
 import javax.swing.SwingUtilities;
 
+import chess.model.board.Location;
+
 public class ChessSpace implements Observer {
 
 	public static final int SIZE = 100;
@@ -36,11 +38,17 @@ public class ChessSpace implements Observer {
 	}
 	
 	public void drawLight(Graphics g) {
-		if(highLighted || selected) {
+		if(highLighted) {
 			Graphics2D g2 = (Graphics2D) g;
-			g2.setColor((selected)? Color.green:Color.red);
+			g2.setColor(Color.red);
 		    g2.setStroke(new BasicStroke(3));
 			g2.drawRect(x*100+2, (y*-100)+700+2, SIZE-5, SIZE-5);
+		}
+		if(selected) {
+			Graphics2D g2 = (Graphics2D) g;
+			g2.setColor(Color.green);
+		    g2.setStroke(new BasicStroke(3));
+			g2.drawRect(x*100+5, (y*-100)+700+5, SIZE-12, SIZE-12);
 		}
 	}
 	
@@ -58,10 +66,12 @@ public class ChessSpace implements Observer {
 			
 			if(SwingUtilities.isLeftMouseButton(e)) {
 				ChessPanel p = (ChessPanel) e.getComponent();
-				if(this.contains(e.getPoint()) && p.getSelected() == null) {
-					System.out.println("Selected");
+				if(this.contains(e.getPoint()) && p.getFirstSelect() == null && this.piece != null) {
 					this.selected = true;
-					p.setSelected(this);
+					p.setFirstSelect(this);
+				}
+				else if(this.contains(e.getPoint()) && p.getSecondSelect() == null && p.getFirstSelect() != null && !this.selected) {
+					p.setSecondSelect(this);
 				}
 			}
 			else {
@@ -94,8 +104,15 @@ public class ChessSpace implements Observer {
 		return this.y;
 	}
 
-	public void setSeletected(boolean b) {
+	public void setSelected(boolean b) {
 		this.selected = b;
-		
+	}
+	
+	public void setHighLighted(boolean b) {
+		this.highLighted = b;
+	}
+	
+	public Location toLocation() {
+		return new Location(x,y);
 	}
 }

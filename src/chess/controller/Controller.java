@@ -7,6 +7,8 @@ import java.util.ArrayList;
 import java.util.Observable;
 import java.util.Observer;
 
+import javax.swing.SwingUtilities;
+
 import chess.gui.ChessPanel;
 import chess.gui.ChessUI;
 import chess.gui.MouseController;
@@ -142,12 +144,20 @@ public class Controller implements Observer {
 			MouseEvent e = (MouseEvent) obj;
 			ChessPanel p = (ChessPanel) e.getComponent();
 			
-			if(p.getSelected() != null) {
-				p.setSelected(null);
-//				p.resetSelected();
-				p.repaint();
+			if(SwingUtilities.isLeftMouseButton(e)) {
+				if(p.getFirstSelect() != null && p.getSecondSelect() == null) {
+					Location l = p.getFirstSelect().toLocation();
+					p.lightAvailableMoves(board.getPieceAt(l).getValidMoves(l, board));
+					p.repaint();
+				}
+				else if(p.getFirstSelect() != null && p.getSecondSelect() != null) {
+					System.out.println("MOVE");
+				}
 			}
 		}
-		
+	}
+	
+	public ChessBoard getBoard() {
+		return this.board;
 	}
 }

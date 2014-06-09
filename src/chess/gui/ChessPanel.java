@@ -13,12 +13,18 @@ public class ChessPanel extends JPanel {
 	private static final long serialVersionUID = 1L;
 	
 	private ArrayList<ChessSpace> spaces = new ArrayList<ChessSpace>();
-	private ChessSpace currentSelect;
+	private ChessSpace firstSelect;
+	private ChessSpace secondSelect;
+	
+	ChessBoard board;
+	
 
-	public ChessPanel(MouseController mc) {
+	public ChessPanel(MouseController mc, ChessBoard board) {
+		this.board = board;
 		this.addMouseListener(mc);
 		this.addMouseMotionListener(mc);
-		currentSelect = null;
+		firstSelect = null;
+		secondSelect = null;
 		
 		createSpaces();
 		for(ChessSpace c: spaces) {
@@ -60,17 +66,34 @@ public class ChessPanel extends JPanel {
 		this.repaint();
 	}
 	
-	public void setSelected(ChessSpace space) {
-		this.currentSelect = space;
+	public void setFirstSelect(ChessSpace space) {
+		this.firstSelect = space;
 	}
 	
-	public ChessSpace getSelected() {
-		return this.currentSelect;
+	public ChessSpace getFirstSelect() {
+		return this.firstSelect;
+	}
+	
+	public void setSecondSelect(ChessSpace space) {
+		this.secondSelect = space;
+	}
+	
+	public ChessSpace getSecondSelect() {
+		return this.secondSelect;
 	}
 	
 	public void resetSelected() {
 		for(ChessSpace c : spaces) {
-			c.setSeletected(false);
+			c.setSelected(false);
+		}
+	}
+	
+	public void lightAvailableMoves(ArrayList<Location> list) {
+		for(ChessSpace c : spaces) {
+			Location l = c.toLocation();
+			if(list.contains(l)) {
+				c.setSelected(true);
+			}
 		}
 	}
 }

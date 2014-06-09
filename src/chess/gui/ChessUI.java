@@ -11,13 +11,13 @@ public class ChessUI {
 	
 	public ChessUI(Controller c) {
 		JFrame mainFrame = new JFrame("Chess Yo");
-		mainFrame.setSize(806, 830);
+		mainFrame.setSize(804, 828);
 		mainFrame.setResizable(false);
 		mainFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		
 		mc = new MouseController();
 		mc.addObserver(c);
-		cp = new ChessPanel(mc);
+		cp = new ChessPanel(mc, c.getBoard());
 		cp.setVisible(true);
 		
 		mainFrame.add(cp);
