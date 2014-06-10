@@ -20,7 +20,7 @@ public class PlaceCommand implements IExecutable {
 	}
 
 	@Override
-	public void execute(ChessBoard board, boolean isLightTurn) {
+	public void execute(ChessBoard board) {
 		
 		board.setPieceAt(piece, location);
 		
@@ -33,9 +33,15 @@ public class PlaceCommand implements IExecutable {
 	}
 
 	@Override
-	public void executeLite(ChessBoard board, boolean isLightTurn) {
+	public void executeLite(ChessBoard board) {
 		// TODO Auto-generated method stub
 		
+	}
+
+	@Override
+	public Location getDestination() {
+		// TODO Auto-generated method stub
+		return null;
 	}
 	
 	

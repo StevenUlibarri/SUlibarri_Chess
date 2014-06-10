@@ -1,20 +1,23 @@
 package chess.gui;
 
 import java.awt.Graphics;
+import java.awt.Point;
 import java.util.ArrayList;
+
 import javax.swing.JPanel;
 
 import chess.model.board.ChessBoard;
 import chess.model.board.Location;
-import chess.model.pieces.ChessPiece;
+import chess.model.commands.IExecutable;
 
 public class ChessPanel extends JPanel {
 	
 	private static final long serialVersionUID = 1L;
 	
-	private ArrayList<ChessSpace> spaces = new ArrayList<ChessSpace>();
+	private ChessSpace[][] spaces = new ChessSpace[8][8];
 	private ChessSpace firstSelect;
 	private ChessSpace secondSelect;
+	private ArrayList<IExecutable> currentValidCommands;
 	
 	ChessBoard board;
 	
@@ -26,44 +29,35 @@ public class ChessPanel extends JPanel {
 		firstSelect = null;
 		secondSelect = null;
 		
-		createSpaces();
-		for(ChessSpace c: spaces) {
-			mc.addObserver(c);
-		}
+		createSpaces(mc);
 	}
 	
 	protected void paintComponent(Graphics g) {
 		g.clearRect(0, 0, 800, 800);
-		for (ChessSpace c : spaces) {
-			c.drawMe(g);
-		}
-		for(ChessSpace c : spaces) {
-			c.drawPiece(g);
-		}
-		for(ChessSpace c : spaces) {
-			c.drawLight(g);
-		}
-	}
-	
-	private void createSpaces() {
 		for (int i = 0; i <= ChessBoard.MAX_INDEX; i++) {
 			for (int j = 0; j <= ChessBoard.MAX_INDEX; j++) {
-				spaces.add(new ChessSpace(i, j, ((i+1+j+1)%2 != 0)? true:false));
+				spaces[i][j].drawMe(g);
+			}
+		}
+		for (int i = 0; i <= ChessBoard.MAX_INDEX; i++) {
+			for (int j = 0; j <= ChessBoard.MAX_INDEX; j++) {
+				spaces[i][j].drawPiece(g);
+			}
+		}
+		for (int i = 0; i <= ChessBoard.MAX_INDEX; i++) {
+			for (int j = 0; j <= ChessBoard.MAX_INDEX; j++) {
+				spaces[i][j].drawLight(g);
 			}
 		}
 	}
 	
-	public void updateBoard(ChessBoard board) {
-		for(ChessSpace c: spaces) {
-			ChessPiece p = board.getPieceAt(new Location(c.getX(), c.getY()));
-			if(p == null) {
-				c.setPiece(null);
-			}
-			else {
-				c.setPiece(PieceImageFactory.getImage(p.getPieceType(), p.isLight()));
+	private void createSpaces(MouseController mc) {
+		for (int i = 0; i <= ChessBoard.MAX_INDEX; i++) {
+			for (int j = 0; j <= ChessBoard.MAX_INDEX; j++) {
+				spaces[i][j] = new ChessSpace(i, j, ((i+1+j+1)%2 != 0)? true:false, board.getPieceArray()[i][j]);
+				mc.addObserver(spaces[i][j]);
 			}
 		}
-		this.repaint();
 	}
 	
 	public void setFirstSelect(ChessSpace space) {
@@ -82,18 +76,70 @@ public class ChessPanel extends JPanel {
 		return this.secondSelect;
 	}
 	
+	public ChessBoard getBoard() {
+		return this.board;
+	}
 	public void resetSelected() {
-		for(ChessSpace c : spaces) {
-			c.setSelected(false);
+		for (int i = 0; i <= ChessBoard.MAX_INDEX; i++) {
+			for (int j = 0; j <= ChessBoard.MAX_INDEX; j++) {
+				spaces[i][j].setSelected(false);
+			}
 		}
 	}
 	
-	public void lightAvailableMoves(ArrayList<Location> list) {
-		for(ChessSpace c : spaces) {
-			Location l = c.toLocation();
-			if(list.contains(l)) {
-				c.setSelected(true);
+	public void lightValidMoves(ArrayList<IExecutable> commands) {
+		ArrayList<Location> loc = new ArrayList<Location>();
+		for(IExecutable e: commands) {
+			loc.add(e.getDestination());
+		}
+		
+		for (int i = 0; i <= ChessBoard.MAX_INDEX; i++) {
+			for (int j = 0; j <= ChessBoard.MAX_INDEX; j++) {
+				if(loc.contains(spaces[i][j].toLocation())) {
+					spaces[i][j].setSelected(true);
+				}
 			}
 		}
+		this.repaint();
+		
+		currentValidCommands = commands;
+	}
+	
+	public void updateImages() {
+		for (int i = 0; i <= ChessBoard.MAX_INDEX; i++) {
+			for (int j = 0; j <= ChessBoard.MAX_INDEX; j++) {
+				spaces[i][j].setPiece(board.getPieceArray()[i][j]);
+				spaces[i][j].updateImage();
+			}
+		}
+	}
+	
+	public IExecutable getValidMove() {
+		IExecutable move = null;
+		for(IExecutable e: currentValidCommands) {
+			if(e.getDestination().equals(secondSelect.toLocation())) {
+				move = e;
+			}
+		}
+		return move;
+	}
+	
+	public void clearSelected() {
+		for (int i = 0; i <= ChessBoard.MAX_INDEX; i++) {
+			for (int j = 0; j <= ChessBoard.MAX_INDEX; j++) {
+				spaces[i][j].setSelected(false);
+			}
+		}
+	}
+	
+	public ChessSpace getClicked(Point p) {
+		for (int i = 0; i <= ChessBoard.MAX_INDEX; i++) {
+			for (int j = 0; j <= ChessBoard.MAX_INDEX; j++) {
+				if(spaces[i][j].contains(p)) {
+					return spaces[i][j];
+				}
+			}
+		}
+		return null;
 	}
 }

@@ -3,6 +3,7 @@ package chess.model.commands;
 import java.util.HashSet;
 
 import chess.model.board.ChessBoard;
+import chess.model.board.Location;
 import chess.model.customExceptions.InvalidCommandException;
 import chess.model.pieces.ChessPiece;
 
@@ -23,7 +24,9 @@ public class CastleCommand implements IExecutable {
 	}
 
 	@Override
-	public void execute(ChessBoard board, boolean isLightTurn) throws InvalidCommandException {
+	public void execute(ChessBoard board) throws InvalidCommandException {
+		
+		Boolean isLightTurn = board.getTurn();
 		
 		ChessPiece king = board.getPieceAt(kingMove.getBeginLocation());
 		ChessPiece rook = board.getPieceAt(rookMove.getBeginLocation());
@@ -82,7 +85,10 @@ public class CastleCommand implements IExecutable {
 	}
 
 	@Override
-	public void executeLite(ChessBoard board, boolean isLightTurn) {
+	public void executeLite(ChessBoard board) {
+		
+		boolean isLightTurn = board.getTurn();
+		
 		turnString = (isLightTurn)? "Light" : "Dark";
 		board.setPieceAt(board.removePieceAt(kingMove.getBeginLocation()), kingMove.getEndLocation());
 		board.setPieceAt(board.removePieceAt(rookMove.getBeginLocation()), rookMove.getEndLocation());
@@ -102,5 +108,10 @@ public class CastleCommand implements IExecutable {
 		else if(board.isKinginCheck(!isLightTurn)) {
 			checkString = " - " + ((isLightTurn)? "Dark":"Light") + " king in Check!";
 		}
+	}
+
+	@Override
+	public Location getDestination() {
+		return kingMove.getDestination();
 	}
 }

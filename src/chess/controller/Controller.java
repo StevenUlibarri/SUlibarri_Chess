@@ -25,8 +25,8 @@ public class Controller implements Observer {
 	private ChessBoard board;
 	private FileIO f;
 	private MyIO m;
-	
-	private boolean isLightTurn = true;
+	private ChessUI c;
+
 	
 	public Controller() {
 		f = new FileIO();
@@ -38,13 +38,13 @@ public class Controller implements Observer {
 		while (!list.isEmpty()) {
 			try {
 				IExecutable i = list.poll();
-				i.execute(board, isLightTurn);
+				i.execute(board);
 				if(withStep) {
 					System.out.println(i);
 					board.displayBoard();
 				}
 				if (withTurns) {
-					isLightTurn = !isLightTurn;
+					board.swapTurn();
 				}
 			} catch (InvalidCommandException e) {
 				System.out.println("Invalid Command: " + e.getMessage());
@@ -55,7 +55,6 @@ public class Controller implements Observer {
 	private void setup() {
 		System.out.println("New Game");
 		board = new ChessBoard();
-		isLightTurn = true;
 		executeFile(f.parseFile(new File("scripts/setup")), false, false);
 	}
 
@@ -70,16 +69,16 @@ public class Controller implements Observer {
 		board.displayBoard();
 		
 		while(!board.isMate()) {
-			IExecutable move = displayMovablePieces(isLightTurn);
-			move.executeLite(board, isLightTurn);
+			IExecutable move = displayMovablePieces(board.getTurn());
+			move.executeLite(board);
 			System.out.println(move);
 			board.displayBoard();
-			isLightTurn = !isLightTurn;
+			board.swapTurn();
 		}
 	}
 	
 	public IExecutable displayMovablePieces(boolean color) {
-		ArrayList<Location> movablePieces = board.getPiecesWithValidMoves(isLightTurn);
+		ArrayList<Location> movablePieces = board.getPiecesWithValidMoves(board.getTurn());
 		IExecutable choice = null;
 		
 		while(choice == null) {
@@ -95,6 +94,57 @@ public class Controller implements Observer {
 	}
 	
 	public IExecutable selectMoveForPiece(Location pieceLocation) {
+		ArrayList<IExecutable>validCommands = getValidMovesForPiece(pieceLocation);
+		
+		System.out.println("Select a move");
+		for(int i = 0; i < validCommands.size(); i++) {
+			System.out.println((i+1) + ". " + validCommands.get(i).getSelectString());
+		}
+		System.out.println(validCommands.size()+1 + ". Back");
+		
+		int selection = m.promptIntInRange("", 0, validCommands.size()+1);
+		IExecutable choice = null;
+		if(selection < validCommands.size()+1) {
+			choice = validCommands.get(selection-1); 
+		}
+		
+		return choice;
+	}
+	
+	public void playGui() {
+		setup();
+		c = new ChessUI(this);
+	}
+
+	@Override
+	public void update(Observable obs, Object obj) {
+		if(obs instanceof MouseController && obj instanceof MouseEvent) {
+			MouseEvent e = (MouseEvent) obj;
+			ChessPanel p = (ChessPanel) e.getComponent();
+			
+			if(SwingUtilities.isLeftMouseButton(e) && p.getFirstSelect() != null && p.getSecondSelect() == null) {
+				ArrayList<IExecutable> moves = getValidMovesForPiece(p.getFirstSelect().toLocation());
+				c.getPanel().lightValidMoves(moves);
+			}
+		}
+		if(obs instanceof MouseController && obj instanceof IExecutable) {
+			IExecutable e = (IExecutable) obj;
+			e.executeLite(board);
+			board.swapTurn();
+			System.out.println(e);
+			c.getPanel().setFirstSelect(null);
+			c.getPanel().setSecondSelect(null);
+			c.getPanel().clearSelected();
+			c.getPanel().updateImages();
+			c.getPanel().repaint();
+		}
+	}
+	
+	public ChessBoard getBoard() {
+		return this.board;
+	}
+	
+	private ArrayList<IExecutable>getValidMovesForPiece(Location pieceLocation) {
 		ArrayList<IExecutable> validCommands = new ArrayList<IExecutable>();
 		ArrayList<Location> pieceMoves = board.mateFilter(pieceLocation, board.getPieceAt(pieceLocation).getValidMoves(pieceLocation, board));
 		
@@ -116,48 +166,6 @@ public class Controller implements Observer {
 						);
 			}
 		}
-		
-		System.out.println("Select a move");
-		for(int i = 0; i < validCommands.size(); i++) {
-			System.out.println((i+1) + ". " + validCommands.get(i).getSelectString());
-		}
-		System.out.println(validCommands.size()+1 + ". Back");
-		
-		int selection = m.promptIntInRange("", 0, validCommands.size()+1);
-		IExecutable choice = null;
-		if(selection < validCommands.size()+1) {
-			choice = validCommands.get(selection-1); 
-		}
-		
-		return choice;
-	}
-	
-	public void playGui() {
-		setup();
-		ChessUI c = new ChessUI(this);
-		c.getPanel().updateBoard(board);
-	}
-
-	@Override
-	public void update(Observable obs, Object obj) {
-		if(obs instanceof MouseController && obj instanceof MouseEvent) {
-			MouseEvent e = (MouseEvent) obj;
-			ChessPanel p = (ChessPanel) e.getComponent();
-			
-			if(SwingUtilities.isLeftMouseButton(e)) {
-				if(p.getFirstSelect() != null && p.getSecondSelect() == null) {
-					Location l = p.getFirstSelect().toLocation();
-					p.lightAvailableMoves(board.getPieceAt(l).getValidMoves(l, board));
-					p.repaint();
-				}
-				else if(p.getFirstSelect() != null && p.getSecondSelect() != null) {
-					System.out.println("MOVE");
-				}
-			}
-		}
-	}
-	
-	public ChessBoard getBoard() {
-		return this.board;
+		return validCommands;
 	}
 }

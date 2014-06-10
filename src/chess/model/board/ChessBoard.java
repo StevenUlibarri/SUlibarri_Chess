@@ -16,11 +16,10 @@ public class ChessBoard {
 	private boolean lightKingInCheck = false;
 	private boolean darkKingInCheck = false;
 	private boolean mate = false;
-	
+	private boolean isLightTurn = true;
 	
 	public ChessBoard() {
 		boardArray  = new ChessPiece[COLUMNS][ROWS];
-		
 	}
 	
 	public ChessBoard(ChessBoard boardToCopy) {
@@ -31,6 +30,14 @@ public class ChessBoard {
 				boardArray[i][j] = boardToCopy.getBoardArray()[i][j];
 			}
 		}
+	}
+	
+	public void swapTurn() {
+		isLightTurn = !isLightTurn;
+	}
+	
+	public boolean getTurn() {
+		return this.isLightTurn;
 	}
 
 	public void displayBoard() {
@@ -53,6 +60,10 @@ public class ChessBoard {
 		}
 		System.out.println("    A   B   C   D   E   F   G   H");
 		System.out.println();
+	}
+	
+	public ChessPiece[][] getPieceArray() {
+		return this.boardArray;
 	}
 	
 	public ChessPiece getPieceAt(Location l) {

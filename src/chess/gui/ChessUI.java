@@ -16,9 +16,10 @@ public class ChessUI {
 		mainFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		
 		mc = new MouseController();
-		mc.addObserver(c);
+		
 		cp = new ChessPanel(mc, c.getBoard());
 		cp.setVisible(true);
+		mc.addObserver(c);
 		
 		mainFrame.add(cp);
 		mainFrame.setVisible(true);

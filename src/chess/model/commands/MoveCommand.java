@@ -23,7 +23,9 @@ public class MoveCommand implements IExecutable{
 	}
 
 	@Override
-	public void execute(ChessBoard board, boolean isLightTurn) throws InvalidCommandException {
+	public void execute(ChessBoard board) throws InvalidCommandException {
+		
+		boolean isLightTurn = board.getTurn();
 		
 		ChessPiece movingPiece = board.getPieceAt(beginLocation);
 		ChessPiece endingPiece = board.getPieceAt(endLocation);
@@ -93,7 +95,9 @@ public class MoveCommand implements IExecutable{
 	}
 
 	@Override
-	public void executeLite(ChessBoard board, boolean isLightTurn) {
+	public void executeLite(ChessBoard board) {
+		
+		Boolean isLightTurn = board.getTurn();
 		
 		ChessPiece movingPiece = board.getPieceAt(beginLocation);
 		
@@ -134,5 +138,10 @@ public class MoveCommand implements IExecutable{
 				board.setPieceAt(new Queen(color), new Location(i, rowToCheck));
 			}
 		}
+	}
+
+	@Override
+	public Location getDestination() {
+		return this.endLocation;
 	}
 }
