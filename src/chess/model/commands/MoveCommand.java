@@ -79,11 +79,8 @@ public class MoveCommand implements IExecutable{
 	public String executeAI(ChessBoard board)
 	{
 		Boolean isLightTurn = board.getTurn();
-<<<<<<< HEAD
 		String moveString = beginLocation.toString() + " " + endLocation.toString();
-=======
-		String moveString = "";
->>>>>>> origin/master
+
 		
 		ChessPiece movingPiece = board.getPieceAt(beginLocation);
 		
@@ -109,11 +106,6 @@ public class MoveCommand implements IExecutable{
 			board.setMate(true);
 		}
 		else if(board.isKinginCheck(!isLightTurn)) {
-<<<<<<< HEAD
-			
-=======
-
->>>>>>> origin/master
 		}
 		
 		return moveString;
