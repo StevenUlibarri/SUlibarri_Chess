@@ -9,9 +9,10 @@ public class ChessMain {
 		
 		Controller c = new Controller();
 //		c.playConsole();
-		c.playGui();
+//		c.playGui();
 //		c.playFile();
 		
+		c.playJudge((args[0].equals("white") ? true : false));
 //		ScratchCode s = new ScratchCode();
 	}
 

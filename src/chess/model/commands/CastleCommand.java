@@ -114,4 +114,9 @@ public class CastleCommand implements IExecutable {
 	public Location getDestination() {
 		return kingMove.getDestination();
 	}
+
+	@Override
+	public String executeAI(ChessBoard board) {
+		return "";
+	}
 }
