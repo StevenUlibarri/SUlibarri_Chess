@@ -116,20 +116,33 @@ public class Controller implements Observer {
 	{
 		setupForJudge();
 		
+<<<<<<< HEAD
 		Scanner scan = new Scanner(System.in);
 		DeepGreen ai = new DeepGreen(isLight);
+=======
+
+		
+		Scanner scan = new Scanner(System.in);
+>>>>>>> origin/master
 		boolean gameIsRunning = true;
 		while(gameIsRunning)
 		{
 			if(isLight == board.getTurn())
 			{
+<<<<<<< HEAD
 				System.out.println(ai.makeMove(board).executeAI(board));
 				board.swapTurn();
+=======
+				
+>>>>>>> origin/master
 			}
 			else
 			{
 				f.parseCommand(scan.nextLine()).executeAI(board);
+<<<<<<< HEAD
 				board.swapTurn();
+=======
+>>>>>>> origin/master
 			}
 		}
 	}
