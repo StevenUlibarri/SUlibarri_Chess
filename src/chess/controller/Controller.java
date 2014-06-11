@@ -125,7 +125,7 @@ public class Controller implements Observer {
 		Scanner scan = new Scanner(System.in);
 >>>>>>> origin/master
 		boolean gameIsRunning = true;
-		while(gameIsRunning && !board.isMate())
+		while(gameIsRunning)
 		{
 			if(isLight == board.getTurn())
 			{
