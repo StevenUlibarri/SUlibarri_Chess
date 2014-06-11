@@ -75,6 +75,41 @@ public class MoveCommand implements IExecutable{
 			}
 		}	
 	}
+
+	public String executeAI(ChessBoard board)
+	{
+		Boolean isLightTurn = board.getTurn();
+		String moveString = "";
+		
+		ChessPiece movingPiece = board.getPieceAt(beginLocation);
+		
+		movingPieceString = movingPiece.toTextString();
+		if (board.getPieceAt(endLocation) != null) {
+			takes = true;
+			pieceToTake = board.getPieceAt(endLocation).toTextString();
+		}
+		else {
+			takes = false;
+		}
+		
+		board.setPieceAt(board.removePieceAt(beginLocation), endLocation);
+		board.getPieceAt(endLocation).moved();
+		
+		checkPromotions(isLightTurn, board);
+		board.upDateCheckStatus(isLightTurn);
+		
+		if(board.isKinginCheck(!isLightTurn) && board.isMate(!isLightTurn)) {
+			board.setMate(true);
+		}
+		else if(board.isMate(!isLightTurn)) {
+			board.setMate(true);
+		}
+		else if(board.isKinginCheck(!isLightTurn)) {
+
+		}
+		
+		return moveString;
+	}
 	
 	public Location getBeginLocation() {
 		return beginLocation;

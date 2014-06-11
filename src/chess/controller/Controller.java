@@ -6,6 +6,7 @@ import java.util.ArrayDeque;
 import java.util.ArrayList;
 import java.util.Observable;
 import java.util.Observer;
+import java.util.Scanner;
 
 import javax.swing.SwingUtilities;
 
@@ -17,8 +18,14 @@ import chess.model.board.Location;
 import chess.model.commands.CastleCommand;
 import chess.model.commands.IExecutable;
 import chess.model.commands.MoveCommand;
+import chess.model.commands.PlaceCommand;
 import chess.model.customExceptions.InvalidCommandException;
+import chess.model.pieces.Bishop;
 import chess.model.pieces.King;
+import chess.model.pieces.Knight;
+import chess.model.pieces.Pawn;
+import chess.model.pieces.Queen;
+import chess.model.pieces.Rook;
 
 public class Controller implements Observer {
 
@@ -26,7 +33,6 @@ public class Controller implements Observer {
 	private FileIO f;
 	private MyIO m;
 	private ChessUI c;
-
 	
 	public Controller() {
 		f = new FileIO();
@@ -52,6 +58,47 @@ public class Controller implements Observer {
 		}
 	}
 	
+	private void setupForJudge()
+	{
+		board = new ChessBoard();
+		//Setting up the dark and light pawns
+		new PlaceCommand(new Pawn(true), new Location('a', 2)).execute(board);
+		new PlaceCommand(new Pawn(true), new Location('b', 2)).execute(board);
+		new PlaceCommand(new Pawn(true), new Location('c', 2)).execute(board);
+		new PlaceCommand(new Pawn(true), new Location('d', 2)).execute(board);
+		new PlaceCommand(new Pawn(true), new Location('e', 2)).execute(board);
+		new PlaceCommand(new Pawn(true), new Location('f', 2)).execute(board);
+		new PlaceCommand(new Pawn(true), new Location('g', 2)).execute(board);
+		new PlaceCommand(new Pawn(true), new Location('h', 2)).execute(board);
+		new PlaceCommand(new Pawn(false), new Location('a', 7)).execute(board);
+		new PlaceCommand(new Pawn(false), new Location('b', 7)).execute(board);
+		new PlaceCommand(new Pawn(false), new Location('c', 7)).execute(board);
+		new PlaceCommand(new Pawn(false), new Location('d', 7)).execute(board);
+		new PlaceCommand(new Pawn(false), new Location('e', 7)).execute(board);
+		new PlaceCommand(new Pawn(false), new Location('f', 7)).execute(board);
+		new PlaceCommand(new Pawn(false), new Location('g', 7)).execute(board);
+		new PlaceCommand(new Pawn(false), new Location('h', 7)).execute(board);
+		
+		//Setting up the rest of the pieces
+		new PlaceCommand(new Rook(true), new Location('a', 1)).execute(board);
+		new PlaceCommand(new Rook(true), new Location('h', 1)).execute(board);
+		new PlaceCommand(new Knight(true), new Location('b', 1)).execute(board);
+		new PlaceCommand(new Knight(true), new Location('g', 1)).execute(board);
+		new PlaceCommand(new Bishop(true), new Location('c', 1)).execute(board);
+		new PlaceCommand(new Bishop(true), new Location('f', 1)).execute(board);
+		new PlaceCommand(new King(true), new Location('e', 1)).execute(board);
+		new PlaceCommand(new Queen(true), new Location('d', 1)).execute(board);
+		new PlaceCommand(new Rook(false), new Location('a', 8)).execute(board);
+		new PlaceCommand(new Rook(false), new Location('h', 8)).execute(board);
+		new PlaceCommand(new Knight(false), new Location('b', 8)).execute(board);
+		new PlaceCommand(new Knight(false), new Location('g', 8)).execute(board);
+		new PlaceCommand(new Bishop(false), new Location('c', 8)).execute(board);
+		new PlaceCommand(new Bishop(false), new Location('f', 8)).execute(board);
+		new PlaceCommand(new King(false), new Location('e', 8)).execute(board);
+		new PlaceCommand(new Queen(false), new Location('d', 8)).execute(board);
+		
+	}
+	
 	private void setup() {
 		System.out.println("New Game");
 		board = new ChessBoard();
@@ -62,6 +109,27 @@ public class Controller implements Observer {
 		setup();
 		board.displayBoard();
 		executeFile(f.parseFile(new File("scripts/test")), true, true);
+	}
+	
+	public void playJudge(boolean isLight)
+	{
+		setupForJudge();
+		
+
+		
+		Scanner scan = new Scanner(System.in);
+		boolean gameIsRunning = true;
+		while(gameIsRunning)
+		{
+			if(isLight == board.getTurn())
+			{
+				
+			}
+			else
+			{
+				f.parseCommand(scan.nextLine()).executeAI(board);
+			}
+		}
 	}
 	
 	public void playConsole() {

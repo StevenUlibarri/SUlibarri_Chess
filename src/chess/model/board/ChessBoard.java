@@ -171,7 +171,7 @@ public class ChessBoard {
 				ChessPiece p = getPieceAt(temp);
 				
 				if(p != null && p.isLight() == color) {
-					if(!mateFilter(temp, getPieceAt(temp).getValidMoves(temp, this)).isEmpty()) {
+					if(!mateFilter(temp, p.getValidMoves(temp, this)).isEmpty()) {
 						movablePieces.add(temp);
 					}
 				}

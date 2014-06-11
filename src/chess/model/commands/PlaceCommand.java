@@ -43,6 +43,11 @@ public class PlaceCommand implements IExecutable {
 		// TODO Auto-generated method stub
 		return null;
 	}
+
+	@Override
+	public String executeAI(ChessBoard board) {
+		return "";
+	}
 	
 	
 }
