@@ -49,6 +49,7 @@ public class FileIO {
 	
 	public IExecutable parseCommand(String cmd) {
 		IExecutable tempCommand = null;
+		cmd = cmd.toLowerCase();
 		
 		Matcher moveMatch = moveCommand.matcher(cmd);
 		Matcher placeMatch = placeCommand.matcher(cmd);
