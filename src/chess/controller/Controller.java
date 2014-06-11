@@ -120,7 +120,7 @@ public class Controller implements Observer {
 		DeepGreen ai = new DeepGreen(isLight);
 
 		boolean gameIsRunning = true;
-		while(gameIsRunning && !board.isMate())
+		while(gameIsRunning)
 		{
 			if(isLight == board.getTurn())
 			{
