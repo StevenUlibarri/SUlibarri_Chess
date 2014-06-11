@@ -235,20 +235,20 @@ public class Controller implements Observer {
 			validCommands.add(new MoveCommand(pieceLocation,endLocation,false));
 		}
 		
-		if(board.getPieceAt(pieceLocation) instanceof King) {
-			if(board.isShortCastleClear(pieceLocation)) {
-				validCommands.add(new CastleCommand(
-						new MoveCommand(pieceLocation, new Location(6,pieceLocation.getRowIndex()), false),
-						new MoveCommand(new Location(7, pieceLocation.getRowIndex()), new Location(5, pieceLocation.getRowIndex()), false))
-						);
-			}
-			if(board.isLongCastleClear(pieceLocation)) {
-				validCommands.add(new CastleCommand(
-						new MoveCommand(pieceLocation, new Location(2,pieceLocation.getRowIndex()), false),
-						new MoveCommand(new Location(0, pieceLocation.getRowIndex()), new Location(3, pieceLocation.getRowIndex()), false))
-						);
-			}
-		}
+//		if(board.getPieceAt(pieceLocation) instanceof King) {
+//			if(board.isShortCastleClear(pieceLocation)) {
+//				validCommands.add(new CastleCommand(
+//						new MoveCommand(pieceLocation, new Location(6,pieceLocation.getRowIndex()), false),
+//						new MoveCommand(new Location(7, pieceLocation.getRowIndex()), new Location(5, pieceLocation.getRowIndex()), false))
+//						);
+//			}
+//			if(board.isLongCastleClear(pieceLocation)) {
+//				validCommands.add(new CastleCommand(
+//						new MoveCommand(pieceLocation, new Location(2,pieceLocation.getRowIndex()), false),
+//						new MoveCommand(new Location(0, pieceLocation.getRowIndex()), new Location(3, pieceLocation.getRowIndex()), false))
+//						);
+//			}
+//		}
 		return validCommands;
 	}
 }
