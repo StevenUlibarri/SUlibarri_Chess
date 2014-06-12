@@ -3,6 +3,7 @@ package chess.ai;
 import java.util.ArrayList;
 import java.util.Random;
 
+import chess.controller.Controller;
 import chess.model.board.ChessBoard;
 import chess.model.board.Location;
 import chess.model.commands.IExecutable;
@@ -11,34 +12,62 @@ import chess.model.pieces.ChessPiece;
 
 public class DeepGreen {
 	boolean isLight;
+	Controller c;
 	
-	public DeepGreen(boolean isLight)
+	public DeepGreen(boolean isLight, Controller c)
 	{
 		this.isLight = isLight;
+		this.c = c;
 	}
 	
 	public IExecutable makeMove(ChessBoard board)
 	{
-		IExecutable move = null;
-		ArrayList<Location> piecesWithMoves = board.getPiecesWithValidMoves(isLight);
+//		IExecutable move = null;
+//		ArrayList<Location> piecesWithMoves = board.getPiecesWithValidMoves(isLight);
+//		
+//		Random rand = new Random();
+//		Location pieceLocation = piecesWithMoves.get(rand.nextInt(piecesWithMoves.size()));
+//		ChessPiece chosenPiece = board.getPieceAt(pieceLocation);
+//		
+//		ArrayList<Location> movesForPiece = chosenPiece.getValidMoves(pieceLocation, board);
+//		movesForPiece = board.mateFilter(pieceLocation, movesForPiece);
+//		
+//		return new MoveCommand(pieceLocation, movesForPiece.get(rand.nextInt(movesForPiece.size())), false);
 		
-		Random rand = new Random();
-		Location pieceLocation = piecesWithMoves.get(rand.nextInt(piecesWithMoves.size()));
-		ChessPiece chosenPiece = board.getPieceAt(pieceLocation);
+//		ArrayList<IExecutable> allMoves = c.getAllMovesForAllPieces(isLight, board);
+//		IExecutable bestMove = null;
+//		
+//		for(IExecutable i : allMoves) {
+//			int num = alphaBetaMax(isLight, Integer., beta, depthLeft, board)
+//		}
 		
-		ArrayList<Location> movesForPiece = chosenPiece.getValidMoves(pieceLocation, board);
-		movesForPiece = board.mateFilter(pieceLocation, movesForPiece);
-		
-		return new MoveCommand(pieceLocation, movesForPiece.get(rand.nextInt(movesForPiece.size())), false);
 	}
 	
 	private int alphaBetaMax(boolean isLight, int alpha, int beta, int depthLeft, ChessBoard board) {
 		
 		if(board.isMate() || depthLeft == 0) {
-			
+			return board.evaluate(isLight);
 		}
 		
+		int score;
+		ArrayList<IExecutable> moves = c.getAllMovesForAllPieces(isLight, board);
+		//sort
+		for(IExecutable i : moves) {
+			ChessBoard newBoard = new ChessBoard(board);
+			i.executeAI(newBoard);
+			score = alphaBetaMax(!isLight, alpha, beta, depthLeft-1, newBoard);
+			
+			if(score >= beta) {
+				return beta;
+			}
+			if(score > alpha) {
+				alpha = score;
+			}
+		}
+		return alpha;
 	}
+	
+	
 }
 
 
