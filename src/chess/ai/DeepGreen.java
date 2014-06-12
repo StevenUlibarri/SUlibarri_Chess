@@ -35,7 +35,6 @@ public class DeepGreen {
 //		return new MoveCommand(pieceLocation, movesForPiece.get(rand.nextInt(movesForPiece.size())), false);
 		
 		ArrayList<IExecutable> allMoves = c.getAllMovesForAllPieces(isLight, board);
-//		ArrayList<Integer> moveValues = new ArrayList<Integer>();
 		IExecutable bestMove = null;
 		int bestMoveValue = 0;
 		

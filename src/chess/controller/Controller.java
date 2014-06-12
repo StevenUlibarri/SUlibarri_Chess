@@ -169,7 +169,7 @@ public class Controller implements Observer {
 	}
 
 	public IExecutable selectMoveForPiece(Location pieceLocation) {
-		ArrayList<IExecutable>validCommands = getValidMovesForPiece(pieceLocation);
+		ArrayList<IExecutable>validCommands = getValidMovesForPiece(pieceLocation, board);
 
 		System.out.println("Select a move");
 		for(int i = 0; i < validCommands.size(); i++) {
@@ -198,7 +198,7 @@ public class Controller implements Observer {
 			ChessPanel p = (ChessPanel) e.getComponent();
 
 			if(SwingUtilities.isLeftMouseButton(e) && p.getFirstSelect() != null && p.getSecondSelect() == null) {
-				ArrayList<IExecutable> moves = getValidMovesForPiece(p.getFirstSelect().toLocation());
+				ArrayList<IExecutable> moves = getValidMovesForPiece(p.getFirstSelect().toLocation(), board);
 				c.getPanel().lightValidMoves(moves);
 			}
 		}
@@ -219,7 +219,7 @@ public class Controller implements Observer {
 		return this.board;
 	}
 
-	private ArrayList<IExecutable> getValidMovesForPiece(Location pieceLocation) {
+	private ArrayList<IExecutable> getValidMovesForPiece(Location pieceLocation, ChessBoard board) {
 		ArrayList<IExecutable> validCommands = new ArrayList<IExecutable>();
 		ArrayList<Location> pieceMoves = board.mateFilter(pieceLocation, board.getPieceAt(pieceLocation).getValidMoves(pieceLocation, board));
 
@@ -252,7 +252,7 @@ public class Controller implements Observer {
 				Location l = new Location(i,j);
 				ChessPiece p = newBoard.getPieceAt(l);
 				if(p != null && p.isLight() == isLight) {
-					allMoves.addAll(getValidMovesForPiece(l));
+					allMoves.addAll(getValidMovesForPiece(l, newBoard));
 				}
 			}
 		}
