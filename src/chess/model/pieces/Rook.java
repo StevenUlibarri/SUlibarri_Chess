@@ -11,6 +11,7 @@ public class Rook extends ChessPiece {
 		super(isLight);
 		this.pieceType = "Rook";
 		this.boardChar = 'R';
+		this.pieceValue = 5;
 	}
 
 	@Override

@@ -10,6 +10,7 @@ public abstract class ChessPiece {
 	protected char boardChar;
 	private boolean isLight;
 	private boolean hasMoved;
+	protected int pieceValue;
 	
 	public ChessPiece(boolean isLight) {
 		this.isLight = isLight;
@@ -20,6 +21,10 @@ public abstract class ChessPiece {
 		return pieceType;
 	}
 	
+	public int getPieceValue() {
+		return pieceValue;
+	}
+
 	public char getBoardChar() {
 		return boardChar;
 	}

@@ -11,6 +11,7 @@ public class King extends ChessPiece {
 		super(isLight);
 		this.pieceType = "King";
 		this.boardChar = 'K';
+		this.pieceValue = 0;
 	}
 
 	@Override

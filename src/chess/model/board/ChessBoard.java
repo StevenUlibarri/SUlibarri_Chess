@@ -4,6 +4,7 @@ import java.util.ArrayList;
 
 import chess.model.pieces.ChessPiece;
 import chess.model.pieces.King;
+import chess.model.pieces.Pawn;
 
 public class ChessBoard {
 	
@@ -12,6 +13,8 @@ public class ChessBoard {
 	public static final int COLUMNS = 8;
 	public static final int MIN_INDEX = 0;
 	public static final int MAX_INDEX = 7;
+	public static final int CHECKMATE_VALUE = 5000;
+	public static final int CHECK_VALUE = 20;
 	
 	private boolean lightKingInCheck = false;
 	private boolean darkKingInCheck = false;
@@ -223,5 +226,53 @@ public class ChessBoard {
 				isShortCastleClear(kingLocation) : isLongCastleClear(kingLocation);
 		return clear;
 		
+	}
+
+	public int evaluate(boolean isLight)
+	{
+		int boardScore = 0;
+		ArrayList<ChessPiece> pieces = new ArrayList<ChessPiece>();
+		
+		for(int i = 0; i < ROWS; i++)
+		{
+			for(int x = 0; x < COLUMNS; x++)
+			{
+				if(boardArray[i][x] != null && boardArray[i][x].isLight() == isLight)
+				{
+					pieces.add(boardArray[i][x]);
+					
+					if(pieces.size() >= 16)
+					{
+						//Breaks out of the loop if the max number of pieces is found. This saves time
+						break;
+					}
+				}
+			}
+		}
+		
+		for(ChessPiece p : pieces)
+		{
+			boardScore += p.getPieceValue();
+		}
+		
+		if(isMate(isLight))
+		{
+			boardScore -= CHECKMATE_VALUE;
+		}
+		else if(isMate(!isLight))
+		{
+			boardScore += CHECKMATE_VALUE;
+		}
+		
+		if(isKinginCheck(isLight))
+		{
+			boardScore -= CHECK_VALUE;
+		}
+		else if(isKinginCheck(!isLight))
+		{
+			boardScore += CHECK_VALUE / 2;
+		}
+		
+		return boardScore;
 	}
 }

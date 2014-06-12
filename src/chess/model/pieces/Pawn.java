@@ -12,6 +12,7 @@ public class Pawn  extends ChessPiece {
 		super(isLight);
 		this.pieceType = "Pawn";
 		this.boardChar = 'P';
+		this.pieceValue = 1;
 		colorModifier = (isLight)? 1 : -1;
 	}
 
