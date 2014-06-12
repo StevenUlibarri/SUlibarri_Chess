@@ -32,13 +32,13 @@ public class DeepGreen {
 		return new MoveCommand(pieceLocation, movesForPiece.get(rand.nextInt(movesForPiece.size())), false);
 	}
 	
-//	private int alphaBetaMax(boolean isLight, int alpha, int beta, int depthLeft, ChessBoard board) {
-//		
-//		if(board.isMate() || depthLeft == 0) {
-//			
-//		}
-//		
-//	}
+	private int alphaBetaMax(boolean isLight, int alpha, int beta, int depthLeft, ChessBoard board) {
+		
+		if(board.isMate() || depthLeft == 0) {
+			
+		}
+		
+	}
 }
 
 

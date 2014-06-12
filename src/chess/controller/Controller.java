@@ -22,6 +22,7 @@ import chess.model.commands.MoveCommand;
 import chess.model.commands.PlaceCommand;
 import chess.model.customExceptions.InvalidCommandException;
 import chess.model.pieces.Bishop;
+import chess.model.pieces.ChessPiece;
 import chess.model.pieces.King;
 import chess.model.pieces.Knight;
 import chess.model.pieces.Pawn;
@@ -217,7 +218,7 @@ public class Controller implements Observer {
 		return this.board;
 	}
 
-	private ArrayList<IExecutable>getValidMovesForPiece(Location pieceLocation) {
+	private ArrayList<IExecutable> getValidMovesForPiece(Location pieceLocation) {
 		ArrayList<IExecutable> validCommands = new ArrayList<IExecutable>();
 		ArrayList<Location> pieceMoves = board.mateFilter(pieceLocation, board.getPieceAt(pieceLocation).getValidMoves(pieceLocation, board));
 
@@ -240,5 +241,20 @@ public class Controller implements Observer {
 //			}
 //		}
 		return validCommands;
+	}
+	
+	public ArrayList<IExecutable> getAllMovesForAllPieces(boolean isLight, ChessBoard newBoard) {
+		ArrayList<IExecutable> allMoves = new ArrayList<IExecutable>();
+		
+		for(int i = 0; i < 8; i++) {
+			for (int j = 0; j < 8; j++) {
+				Location l = new Location(i,j);
+				ChessPiece p = newBoard.getPieceAt(l);
+				if(p != null && p.isLight() == isLight) {
+					allMoves.addAll(getValidMovesForPiece(l));
+				}
+			}
+		}
+		return allMoves;
 	}
 }
