@@ -34,12 +34,20 @@ public class DeepGreen {
 //		
 //		return new MoveCommand(pieceLocation, movesForPiece.get(rand.nextInt(movesForPiece.size())), false);
 		
-//		ArrayList<IExecutable> allMoves = c.getAllMovesForAllPieces(isLight, board);
-//		IExecutable bestMove = null;
-//		
-//		for(IExecutable i : allMoves) {
-//			int num = alphaBetaMax(isLight, Integer., beta, depthLeft, board)
-//		}
+		ArrayList<IExecutable> allMoves = c.getAllMovesForAllPieces(isLight, board);
+//		ArrayList<Integer> moveValues = new ArrayList<Integer>();
+		IExecutable bestMove = null;
+		int bestMoveValue = 0;
+		
+		for(IExecutable i : allMoves) {
+			ChessBoard newBoard = new ChessBoard(board);
+			i.executeAI(newBoard);
+			int num = alphaBetaMax(isLight, Integer.MIN_VALUE, Integer.MAX_VALUE, 1, newBoard);
+			if(num > bestMoveValue) {
+				bestMove = i;
+			}
+		}
+		return bestMove;
 		
 	}
 	

@@ -118,11 +118,12 @@ public class Controller implements Observer {
 		setupForJudge();
 
 		Scanner scan = new Scanner(System.in);
-		DeepGreen ai = new DeepGreen(isLight);
+		DeepGreen ai = new DeepGreen(isLight, this);
 
 		boolean gameIsRunning = true;
 		while(gameIsRunning && !board.isMate())
 		{
+			board.displayBoard();
 			if(isLight == board.getTurn())
 			{
 				System.out.println(ai.makeMove(board).executeAI(board));
